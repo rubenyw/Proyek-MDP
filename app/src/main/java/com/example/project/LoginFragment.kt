@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState);
 
         binding.loginRegisterBtn.setOnClickListener() {
-
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment);
         }
 
         binding.loginLoginBtn.setOnClickListener() {
