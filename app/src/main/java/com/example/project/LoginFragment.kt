@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
             if (Mekanisme.isEmptyField(field)) {
                 Mekanisme.showToast(requireContext(), "Terdapat Field Kosong!");
             } else {
-               
+
             }
         }
     }
