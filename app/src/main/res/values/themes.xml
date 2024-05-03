@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.PROJECT" parent="Base.Theme.PROJECT" />
+
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/green</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.PROJECT</item>
+    </style>
 </resources>
