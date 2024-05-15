@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
-import com.example.project.databinding.FragmentHomeBinding
-import com.example.project.databinding.FragmentLoginBinding
+import com.example.project.databinding.FragmentRegisterBinding
 
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding;
+class RegisterFragment : Fragment() {
+    private lateinit var binding: FragmentRegisterBinding;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -20,7 +19,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
         val rootView = binding.root;
         (requireActivity() as AppCompatActivity).supportActionBar?.hide();
 //        db = AppDatabase.getDatabase(requireContext())
@@ -29,12 +28,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.btnLoginStart.setOnClickListener{
-            findNavController().navigate(R.id.action_homeFragment2_to_loginFragment);
-        }
+        super.onViewCreated(view, savedInstanceState);
 
-        binding.btnRegisterStart.setOnClickListener{
-            findNavController().navigate(R.id.action_homeFragment2_to_registerFragment);
-        }
     }
 }
