@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
             if(Mekanisme.isEmptyField(field)){
                 Mekanisme.showToast(requireContext(), "Pastikan semua field terisi!");
             }else{
-                Mekanisme.authenticate(field[0], field[1]) { isValid, documentId->
+                Mekanisme.authenticate(field[0], field[1]) { isValid, documentId ->
                     if(isValid){
                         Mekanisme.showToast(requireContext(), "TEST BREHASIL")
                     }else{
