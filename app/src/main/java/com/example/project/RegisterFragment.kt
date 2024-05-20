@@ -59,7 +59,7 @@ class RegisterFragment : Fragment() {
                         usersCollection.add(user)
                             .addOnSuccessListener { documentReference ->
                                 Mekanisme.showToast(requireContext(), "User created successfully!");
-                                findNavController().navigate(R.id.action_global_loginFragment)
+                                findNavController().navigate(R.id.action_registerFragment_to_loginFragment);
                             }
                             .addOnFailureListener { e ->
                                 Log.w("Firestore", "Error adding document", e)
