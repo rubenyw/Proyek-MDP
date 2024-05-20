@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,6 +41,8 @@ class LoginFragment : Fragment() {
             }else{
                 Mekanisme.authenticate(field[0], field[1]) { isValid, documentId ->
                     if(isValid){
+                        val intent = Intent(requireActivity(), MainActivity::class.java);
+                        startActivity(intent);
                         Mekanisme.showToast(requireContext(), "TEST BREHASIL")
                     }else{
                         Mekanisme.showToast(requireContext(), "Couldn't found your account, Recheck your username and password!");

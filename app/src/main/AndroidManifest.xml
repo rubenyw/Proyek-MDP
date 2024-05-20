@@ -26,8 +26,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.App.SplashScreen">
+            android:exported="false">
         </activity>
     </application>
 
