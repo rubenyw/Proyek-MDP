@@ -23,7 +23,8 @@ object Mekanisme {
         val usersCollection = db.collection("users")
         val usernameQuery = usersCollection
             .whereEqualTo("username", username)
-            .whereEqualTo("password", password)
+            .whereEqualTo("password", password);
+
         usernameQuery.get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
@@ -37,6 +38,23 @@ object Mekanisme {
             .addOnFailureListener { exception ->
                 Log.w("Firestore", "Error checking username", exception)
                 completion(false,null)
+            }
+    }
+
+    fun checkUsername(username: String, completion: (Boolean) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        val usersCollection = db.collection("users")
+
+        val usernameQuery = usersCollection.whereEqualTo("username", username)
+
+        usernameQuery.get()
+            .addOnSuccessListener { documents ->
+                val isUsernameAvailable = documents.isEmpty  // Username is available if no documents found
+                completion(isUsernameAvailable)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Firestore", "Error checking username", exception)
+                completion(false) // Indicate an error by returning false (or handle differently)
             }
     }
 }

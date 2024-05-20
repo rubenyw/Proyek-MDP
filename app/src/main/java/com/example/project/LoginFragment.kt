@@ -38,14 +38,13 @@ class LoginFragment : Fragment() {
             if(Mekanisme.isEmptyField(field)){
                 Mekanisme.showToast(requireContext(), "Pastikan semua field terisi!");
             }else{
-//                authenticate(etUsername.text.toString(),etPassword.text.toString()) { isValid, documentId->
-//                    if(isValid){
-//                        val intent = Intent(requireActivity(), MainActivity2::class.java)
-//                        startActivity(intent)
-//                    }else{
-//                        Toast.makeText(requireContext(),  "Couldn't found your account, Recheck your username and password!", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
+                Mekanisme.authenticate(field[0], field[1]) { isValid, documentId ->
+                    if(isValid){
+                        Mekanisme.showToast(requireContext(), "TEST BREHASIL")
+                    }else{
+                        Mekanisme.showToast(requireContext(), "Couldn't found your account, Recheck your username and password!");
+                    }
+                }
             }
         }
     }
