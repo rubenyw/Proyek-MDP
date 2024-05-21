@@ -16,6 +16,7 @@
         android:id="@+id/give_botnav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_give"
         android:title="Give" />
     <item
         android:id="@+id/prof_botnav"
