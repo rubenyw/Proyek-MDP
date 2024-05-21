@@ -9,4 +9,31 @@
         android:name="com.example.project.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/broadcastFragment"
+        android:name="com.example.project.BroadcastFragment"
+        android:label="fragment_broadcast"
+        tools:layout="@layout/fragment_broadcast" />
+    <fragment
+        android:id="@+id/giveFragment"
+        android:name="com.example.project.GiveFragment"
+        android:label="fragment_give"
+        tools:layout="@layout/fragment_give" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.project.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <action
+        android:id="@+id/action_global_broadcastFragment"
+        app:destination="@id/broadcastFragment" />
+    <action
+        android:id="@+id/action_global_giveFragment"
+        app:destination="@id/giveFragment" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
 </navigation>

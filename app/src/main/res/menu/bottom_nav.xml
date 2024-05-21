@@ -2,21 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/home_botnav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Home"
-        android:icon="@drawable/baseline_home_24"/>
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
     <item
+        android:id="@+id/broad_botnav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="Broadcast" />
     <item
+        android:id="@+id/give_botnav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="Give" />
     <item
+        android:id="@+id/prof_botnav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Profile"
-        android:icon="@drawable/baseline_person_24"/>
+        android:icon="@drawable/baseline_person_24"
+        android:title="Profile" />
 </menu>
