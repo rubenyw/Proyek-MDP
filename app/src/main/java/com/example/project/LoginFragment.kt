@@ -22,11 +22,9 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        val rootView = binding.root;
         (requireActivity() as AppCompatActivity).supportActionBar?.hide();
-//        db = AppDatabase.getDatabase(requireContext())
-//        coroutine = CoroutineScope(Dispatchers.IO);
-        return rootView;
+
+        return binding.root;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root);
 
-        supportActionBar?.title = "Nothing Last Forever"
+        supportActionBar?.hide();
 
         binding.bottomNavigation.setOnItemSelectedListener {item ->
             when(item.itemId){
