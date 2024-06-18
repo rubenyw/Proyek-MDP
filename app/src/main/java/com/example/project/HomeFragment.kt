@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         btnEvent = view.findViewById(R.id.btnEvent)
         btnEvent.setOnClickListener {
-            findNavController().navigate(R.id.action_global_eventFragment)
+            findNavController().navigate(R.id.action_global_upcomingEventsFragment)
         }
         btnCommunity = view.findViewById(R.id.btnCommunity)
         btnCommunity.setOnClickListener {
