@@ -10,11 +10,6 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/broadcastFragment"
-        android:name="com.example.project.BroadcastFragment"
-        android:label="fragment_broadcast"
-        tools:layout="@layout/fragment_broadcast" />
-    <fragment
         android:id="@+id/giveFragment"
         android:name="com.example.project.GiveFragment"
         android:label="fragment_give"
@@ -25,9 +20,6 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <action
-        android:id="@+id/action_global_broadcastFragment"
-        app:destination="@id/broadcastFragment" />
-    <action
         android:id="@+id/action_global_giveFragment"
         app:destination="@id/giveFragment" />
     <action
@@ -36,4 +28,14 @@
     <action
         android:id="@+id/action_global_profileFragment"
         app:destination="@id/profileFragment" />
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.project.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" />
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.example.project.communityFragment"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" /><action android:id="@+id/action_global_eventFragment" app:destination="@id/eventFragment"/><action android:id="@+id/action_global_communityFragment" app:destination="@id/communityFragment"/>
 </navigation>
