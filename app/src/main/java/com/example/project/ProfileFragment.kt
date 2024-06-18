@@ -1,33 +1,25 @@
 package com.example.project
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var db: AppDatabase
+    private val coroutine = CoroutineScope(Dispatchers.IO)
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +29,59 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    lateinit var tvName: TextView
+    lateinit var tvUsername: TextView
+    lateinit var tvEmail: TextView
+    lateinit var book: ConstraintLayout
+    lateinit var edit: ConstraintLayout
+    lateinit var logout: ConstraintLayout
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        tvName = view.findViewById(R.id.profile_name_tv)
+        tvUsername = view.findViewById(R.id.profile_username_tv)
+        tvEmail = view.findViewById(R.id.profile_email_tv)
+        db = AppDatabase.build(this.requireActivity())
+        firestore = FirebaseFirestore.getInstance()
+        var users:List<UserEntity>
+        var id:String
+        coroutine.launch {
+            users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                id = users[0].id
+                fetchUserData(id)
+            }
+        }
+        book = view.findViewById(R.id.profile_book)
+        book.setOnClickListener{
+            findNavController().navigate(R.id.action_global_participationBookFragment)
+        }
+        edit = view.findViewById(R.id.profile_edit)
+        edit.setOnClickListener {
+            findNavController().navigate(R.id.action_global_editProfileFragment)
+        }
+        logout = view.findViewById(R.id.profile_logout)
+        logout.setOnClickListener {
+            coroutine.launch {
+                db.userDAO().deleteAll()
+            }
+            val intent = Intent(requireActivity(), LandingPageActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private suspend fun fetchUserData(id: String) {
+        try {
+            val documentSnapshot = firestore.collection("users").document(id).get().await()
+            if (documentSnapshot.exists()) {
+                val userData = documentSnapshot.data
+                withContext(Dispatchers.Main) {
+                    tvName.text = userData?.get("name") as? String
+                    tvUsername.text = userData?.get("username") as? String
+                    tvEmail.text = userData?.get("email") as? String
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

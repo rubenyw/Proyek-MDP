@@ -23,10 +23,6 @@ class MainActivity : AppCompatActivity() {
                     findNavController(binding.fragmentContainerView.id).navigate(R.id.action_global_homeFragment);
                     true
                 }
-                R.id.give_botnav -> {
-                    findNavController(binding.fragmentContainerView.id).navigate(R.id.action_global_giveFragment);
-                    true
-                }
                 R.id.prof_botnav -> {
                     findNavController(binding.fragmentContainerView.id).navigate(R.id.action_global_profileFragment);
                     true
