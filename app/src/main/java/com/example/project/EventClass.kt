@@ -9,6 +9,5 @@ data class EventClass(
     var date: String,
     var location: String,
     var description: String,
-) {
-    constructor() : this("", "", "", "", "") // Default constructor
-}
+    var urlLink: String,
+)
