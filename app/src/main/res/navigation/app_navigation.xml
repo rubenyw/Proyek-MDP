@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_myCommunitiesFragment_to_findCommunityFragment"
             app:destination="@id/findCommunityFragment" />
+        <action
+            android:id="@+id/action_myCommunitiesFragment_to_communitiesPostsFragment"
+            app:destination="@id/communitiesPostsFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_myCommunitiesFragment"
@@ -75,4 +78,15 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <fragment
+        android:id="@+id/communitiesPostsFragment"
+        android:name="com.example.project.CommunityPostFragment"
+        android:label="fragment_communities_posts"
+        tools:layout="@layout/fragment_communities_posts" >
+        <argument
+            android:name="currentCommunityId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

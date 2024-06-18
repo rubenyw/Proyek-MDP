@@ -9,12 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project.databinding.FragmentMyCommunitiesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyCommunitiesFragment : Fragment() {
     private lateinit var binding: FragmentMyCommunitiesBinding;
     val vm:CommunityViewModel by viewModels()
 
+    private lateinit var db: AppDatabase
+    private val coroutine = CoroutineScope(Dispatchers.IO)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,14 +33,32 @@ class MyCommunitiesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        vm.communities.observe(viewLifecycleOwner, Observer { communities ->
-            // Update UI with the list of communities
-            communities.forEach { community ->
-                println(community)
-            }
+        super.onViewCreated(view, savedInstanceState)
+
+        val communityAdapter = MyCommunityAdapter {
+            val action =
+                MyCommunitiesFragmentDirections.actionMyCommunitiesFragmentToCommunitiesPostsFragment(it.id)
+            findNavController().navigate(action)
+        }
+        binding.rvMyCommunities.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvMyCommunities.adapter = communityAdapter
+
+        vm.userCommunities.observe(viewLifecycleOwner, Observer { userCommunities ->
+            communityAdapter.submitList(userCommunities)
         })
 
-        vm.fetchCommunities()
+        db = AppDatabase.build(this.requireActivity())
+
+        coroutine.launch {
+            val users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                val id = users[0].id
+                withContext(Dispatchers.Main) {
+                    vm.fetchUserCommunities(id)
+                }
+            }
+        }
+
         binding.btnFindCommunity.setOnClickListener {
             val action = MyCommunitiesFragmentDirections.actionMyCommunitiesFragmentToFindCommunityFragment()
             findNavController().navigate(action)
