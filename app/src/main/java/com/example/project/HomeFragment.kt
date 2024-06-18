@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         }
         btnCommunity = view.findViewById(R.id.btnCommunity)
         btnCommunity.setOnClickListener {
-            findNavController().navigate(R.id.action_global_communityFragment)
+            findNavController().navigate(R.id.action_global_myCommunitiesFragment)
         }
     }
 }

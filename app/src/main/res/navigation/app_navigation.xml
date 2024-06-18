@@ -33,9 +33,22 @@
         android:name="com.example.project.EventFragment"
         android:label="fragment_event"
         tools:layout="@layout/fragment_event" />
+    <action android:id="@+id/action_global_eventFragment" app:destination="@id/eventFragment"/>
     <fragment
-        android:id="@+id/communityFragment"
-        android:name="com.example.project.communityFragment"
-        android:label="fragment_community"
-        tools:layout="@layout/fragment_community" /><action android:id="@+id/action_global_eventFragment" app:destination="@id/eventFragment"/><action android:id="@+id/action_global_communityFragment" app:destination="@id/communityFragment"/>
+        android:id="@+id/myCommunitiesFragment"
+        android:name="com.example.project.MyCommunitiesFragment"
+        android:label="fragment_my_communities"
+        tools:layout="@layout/fragment_my_communities" >
+        <action
+            android:id="@+id/action_myCommunitiesFragment_to_findCommunityFragment"
+            app:destination="@id/findCommunityFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_myCommunitiesFragment"
+        app:destination="@id/myCommunitiesFragment" />
+    <fragment
+        android:id="@+id/findCommunityFragment"
+        android:name="com.example.project.FindCommunityFragment"
+        android:label="fragment_find_community"
+        tools:layout="@layout/fragment_find_community" />
 </navigation>
