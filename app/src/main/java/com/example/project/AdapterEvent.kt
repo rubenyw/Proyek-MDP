@@ -32,7 +32,7 @@ class AdapterEvent(var context: Context, var arr: List<EventClass>)
     }
 
     override fun onBindViewHolder(holder: DpHolder, position: Int) {
-        holder.txtName.setText(arr[position].name)
+        holder.txtName.setText(arr[position].name.toString())
         holder.txtLocation.setText(arr[position].location.toString())
         holder.txtDate.setText(arr[position].date.toString())
         holder.txtDescription.setText(arr[position].description.toString())

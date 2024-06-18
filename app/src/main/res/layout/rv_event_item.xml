@@ -16,6 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
@@ -55,7 +56,8 @@
         android:id="@+id/tvDateUpcomingPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="167dp"
-        tools:layout_editor_absoluteY="89dp" />
+        app:layout_constraintStart_toStartOf="@+id/tvEventDescriptionUpcomingPage"
+        app:layout_constraintTop_toBottomOf="@+id/tvEventDescriptionUpcomingPage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

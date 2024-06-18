@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class UpcomingEventsFragment : Fragment() {
@@ -38,11 +40,23 @@ class UpcomingEventsFragment : Fragment() {
         tvLabelUpcomingEvents = v.findViewById(R.id.tvLabelUpcomingEvents)
         buttonNavToCreateEvent = v.findViewById(R.id.buttonNavToCreateEvent)
 
+        buttonNavToCreateEvent.setOnClickListener {
+            Mekanisme.showToast(requireContext(), "KLIK");
+            findNavController().navigate(R.id.action_global_createEventFragment)
+        }
+
         eventsData = vmEvent.getEvents();
-        adapter = AdapterEvent(requireContext(), eventsData)
-        rvEventsList.adapter = adapter
-        var mlayout = GridLayoutManager(requireContext(), 1)
-        rvEventsList.layoutManager = mlayout
+        eventsData.add(
+            EventClass(
+                "12342",
+                "Lama Seklai",
+                "12-05-2034",
+                "Surabaya",
+                "Halo-halo sruabaya tercinta"
+            )
+        )
+        rvEventsList.adapter = AdapterEvent(requireContext(), eventsData)
+        rvEventsList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         return v
     }
