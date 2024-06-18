@@ -4,19 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-
+import kotlin.coroutines.coroutineContext
 @Database(entities = [UserEntity::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase: RoomDatabase(){
+    abstract fun userDAO() : UserDao
 
-    companion object{
-        var db: AppDatabase? = null;
+    companion object {
+        private var _database: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
-            if(db == null){
-                db = Room.databaseBuilder(context,AppDatabase::class.java,"db_t7").fallbackToDestructiveMigration().build()
+        fun build(context:Context?): AppDatabase {
+            if(_database == null) {
+                _database = Room.databaseBuilder(context!!, AppDatabase::class.java, "commovedb")
+                    .fallbackToDestructiveMigration().build()
             }
-
-            return db!!;
+            return _database!!
         }
     }
 }
+
