@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide();
 
+        /*
         binding.bottomNavigation.setOnItemSelectedListener {item ->
             when(item.itemId){
                 R.id.home_botnav -> {
@@ -34,5 +35,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        */
     }
 }

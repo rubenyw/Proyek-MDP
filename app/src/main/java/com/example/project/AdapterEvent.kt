@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class AdapterEvent(var context: Context, var arr: List<EventClass>)
     : RecyclerView.Adapter<AdapterEvent.DpHolder>() {
@@ -36,6 +38,10 @@ class AdapterEvent(var context: Context, var arr: List<EventClass>)
         holder.txtLocation.setText(arr[position].location.toString())
         holder.txtDate.setText(arr[position].date.toString())
         holder.txtDescription.setText(arr[position].description.toString())
+        // Load image from URL using Glide
+        Glide.with(context)
+            .load(arr[position].urlLink)  // Ensure imageUrl is a property of EventClass
+            .into(holder.imageEvent)
         holder.mycons.setOnClickListener(View.OnClickListener {
 //            (context as MainActivity).openDetail(arr[position])
         })

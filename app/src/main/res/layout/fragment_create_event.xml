@@ -29,7 +29,7 @@
             android:layout_marginTop="10dp"
             android:background="#887979"
             android:ems="10"
-            android:inputType="datetime"
+            android:inputType="datetime|date"
             app:layout_constraintEnd_toEndOf="@+id/etEventName"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/etEventName"
@@ -155,6 +155,7 @@
             android:background="#887979"
             android:ems="10"
             android:inputType="text"
+            android:singleLine="false"
             app:layout_constraintEnd_toEndOf="@+id/etEventName"
             app:layout_constraintStart_toStartOf="@+id/etEventName"
             app:layout_constraintTop_toBottomOf="@+id/tvLabelEventDescriptionCreateEventPage" />
