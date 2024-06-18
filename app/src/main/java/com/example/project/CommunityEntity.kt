@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "communities")
 data class CommunityEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: String,
     val name: String,
 )
