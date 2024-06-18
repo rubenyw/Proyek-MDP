@@ -10,13 +10,21 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project.databinding.FragmentFindCommunityBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class FindCommunityFragment : Fragment() {
     private lateinit var binding: FragmentFindCommunityBinding;
     val vm:CommunityViewModel by viewModels()
+    private lateinit var db: AppDatabase
+    private val coroutine = CoroutineScope(Dispatchers.IO)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,15 +37,34 @@ class FindCommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val communityAdapter = CommunityAdapter()
+        db = AppDatabase.build(this.requireActivity())
+
+        coroutine.launch {
+            val users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                val id = users[0].id
+                withContext(Dispatchers.Main) {
+                    vm.fetchCommunities(id)
+                }
+            }
+        }
+        val communityAdapter = FindCommunityAdapter{
+            coroutine.launch {
+                val users = db.userDAO().fetch()
+                if (users.isNotEmpty()) {
+                    val id = users[0].id
+                    withContext(Dispatchers.Main) {
+                        vm.addCommunityMember(it, id)
+                    }
+                }
+            }
+        }
         binding.rvFindCommunities.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvFindCommunities.adapter = communityAdapter
 
         vm.communities.observe(viewLifecycleOwner, Observer { communities ->
             communityAdapter.submitList(communities)
         })
-
-        vm.fetchCommunities()
 
         binding.tvSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}

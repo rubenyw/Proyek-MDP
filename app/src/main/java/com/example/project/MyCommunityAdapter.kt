@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.databinding.CommunityItemsBinding
 
-class PostDiffUtil: DiffUtil.ItemCallback<CommunityEntity>(){
+class CommunityDiffUtil: DiffUtil.ItemCallback<CommunityEntity>(){
     override fun areItemsTheSame(oldItem: CommunityEntity, newItem: CommunityEntity): Boolean {
         return oldItem.id == newItem.id
     }
@@ -20,12 +20,11 @@ class PostDiffUtil: DiffUtil.ItemCallback<CommunityEntity>(){
     }
 }
 
-class CommunityAdapter(
+class MyCommunityAdapter(
     var onClickListener:((CommunityEntity)->Unit)? = null,
-): ListAdapter<CommunityEntity, CommunityAdapter.ViewHolder>(PostDiffUtil()) {
+): ListAdapter<CommunityEntity, MyCommunityAdapter.ViewHolder>(CommunityDiffUtil()) {
     class ViewHolder(val binding: CommunityItemsBinding): RecyclerView.ViewHolder(binding.root){
         val communityName: TextView = binding.lblCommunityName
-        val btnJoin: Button = binding.btnJoin
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding:CommunityItemsBinding = DataBindingUtil.inflate(
@@ -40,8 +39,8 @@ class CommunityAdapter(
         val community = getItem(position)
         holder.communityName.text = community.name
 
-        holder.btnJoin.setOnClickListener {
-
+        holder.itemView.setOnClickListener {
+            onClickListener?.invoke(community)
         }
     }
 }
