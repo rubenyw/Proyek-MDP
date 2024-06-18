@@ -8,11 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.project.databinding.FragmentLoginBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
-    private lateinit var binding: FragmentLoginBinding;
+    private lateinit var db: AppDatabase
+    private val coroutine = CoroutineScope(Dispatchers.IO)
+    private val firestore = FirebaseFirestore.getInstance()
+    private lateinit var binding: FragmentLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -21,29 +28,53 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide();
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
-        return binding.root;
+        // Initialize the database
+        db = AppDatabase.build(this.requireActivity())
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.btnLoginLogin.setOnClickListener {
-            var field = arrayListOf<String>(
+            val fields = arrayListOf(
                 binding.etUsernameLogin.text.toString(),
                 binding.etPasswordLogin.text.toString(),
-            );
+            )
 
-            if(Mekanisme.isEmptyField(field)){
-                Mekanisme.showToast(requireContext(), "Pastikan semua field terisi!");
-            }else{
-                Mekanisme.authenticate(field[0], field[1]) { isValid, documentId ->
-                    if(isValid){
-                        val intent = Intent(requireActivity(), MainActivity::class.java);
-                        startActivity(intent);
-                        Mekanisme.showToast(requireContext(), "TEST BREHASIL")
-                    }else{
-                        Mekanisme.showToast(requireContext(), "Couldn't found your account, Recheck your username and password!");
+            if (Mekanisme.isEmptyField(fields)) {
+                Mekanisme.showToast(requireContext(), "Pastikan semua field terisi!")
+            } else {
+                Mekanisme.authenticate(fields[0], fields[1]) { isValid, documentId ->
+                    if (isValid) {
+                        if (documentId != null) {
+                            firestore.collection("users").document(documentId).get()
+                                .addOnSuccessListener { document ->
+                                    if (document != null) {
+                                        val username = document.getString("username")
+                                        val name = document.getString("name")
+
+                                        val userLogin = UserEntity(
+                                            id = documentId,
+                                            username = username ?: "",
+                                            name = name ?: ""
+                                        )
+
+                                        coroutine.launch {
+                                            db.userDAO().insert(userLogin)
+                                            withContext(Dispatchers.Main) {
+                                                val intent = Intent(requireActivity(), MainActivity::class.java)
+                                                startActivity(intent)
+                                                Mekanisme.showToast(requireContext(), "Login berhasil")
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+                    } else {
+                        Mekanisme.showToast(requireContext(), "Couldn't find your account. Recheck your username and password!")
                     }
                 }
             }
