@@ -51,4 +51,16 @@
         android:name="com.example.project.FindCommunityFragment"
         android:label="fragment_find_community"
         tools:layout="@layout/fragment_find_community" />
+    <fragment
+        android:id="@+id/upcomingEventsFragment"
+        android:name="com.example.project.UpcomingEventsFragment"
+        android:label="fragment_upcoming_events"
+        tools:layout="@layout/fragment_upcoming_events" />
+    <action
+        android:id="@+id/action_global_upcomingEventsFragment"
+        app:destination="@id/upcomingEventsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>
