@@ -22,5 +22,5 @@
         android:layout_weight="1"
         android:gravity="right"
         android:text="Rp 1.000.000"
-        android:textColor="#54FC74" />
+        android:textColor="#10BD31" />
 </LinearLayout>

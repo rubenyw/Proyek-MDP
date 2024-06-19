@@ -22,7 +22,7 @@ class HistoryAdapter(private val donations: List<DonationHistoryEntity>) :
 
     override fun onBindViewHolder(holder: DonationHistoryEntityViewHolder, position: Int) {
         val donation = donations[position]
-        holder.amountTextView.setText(donation.amount);
+        holder.amountTextView.setText(Mekanisme.formatToRupiah(donation.ammount.toInt()));
         holder.messageTextView.setText(donation.message)
     }
 

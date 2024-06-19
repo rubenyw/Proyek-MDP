@@ -64,6 +64,7 @@ class HistoryFragment : Fragment() {
                 }
 
                 val donations = snapshot.toObjects(DonationHistoryEntity::class.java)
+                Log.d(TAG, donations.toString());
                 withContext(Dispatchers.Main) {
                     val historyAdapter = HistoryAdapter(donations)
                     binding.rvDonation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

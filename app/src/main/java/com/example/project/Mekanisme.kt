@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.NumberFormat
+import java.util.Locale
 
 object Mekanisme {
 //    var userLoggedIn: UserEntity? = null;
@@ -56,5 +58,16 @@ object Mekanisme {
                 Log.w("Firestore", "Error checking username", exception)
                 completion(false) // Indicate an error by returning false (or handle differently)
             }
+    }
+
+    fun formatToRupiah(amount: Number): String {
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+        return when (amount) {
+            is Int -> numberFormat.format(amount.toDouble())
+            is Long -> numberFormat.format(amount.toDouble())
+            is Double -> numberFormat.format(amount)
+            else -> throw IllegalArgumentException("Unsupported number type")
+        }
     }
 }
