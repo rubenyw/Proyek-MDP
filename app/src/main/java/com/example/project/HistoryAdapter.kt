@@ -22,8 +22,8 @@ class HistoryAdapter(private val donations: List<DonationHistoryEntity>) :
 
     override fun onBindViewHolder(holder: DonationHistoryEntityViewHolder, position: Int) {
         val donation = donations[position]
-        holder.amountTextView.text = donation.amount
-        holder.messageTextView.text = donation.message
+        holder.amountTextView.setText(donation.amount);
+        holder.messageTextView.setText(donation.message)
     }
 
     override fun getItemCount(): Int = donations.size
