@@ -19,6 +19,10 @@ import java.util.UUID
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
 
 class CreateEventFragment : Fragment() {
 
@@ -34,6 +38,9 @@ class CreateEventFragment : Fragment() {
     lateinit var eventImageButton: Button
     lateinit var eventImageName: TextView
     lateinit var createEventButton: Button
+
+    private val calendar = Calendar.getInstance()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +76,21 @@ class CreateEventFragment : Fragment() {
             findNavController().navigate(R.id.action_global_upcomingEventsFragment)
         }
 
+        eventDateTimeInput.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         return v
+    }
+
+    private fun showDatePickerDialog() {
+        val currentDate = Calendar.getInstance()
+        DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
+            TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
+                calendar.set(year, month, dayOfMonth, hourOfDay, minute)
+                eventDateTimeInput.setText(dateFormat.format(calendar.time))
+            }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), true).show()
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,23 +108,32 @@ class CreateEventFragment : Fragment() {
         val eventLocation = eventLocationInput.text.toString()
         val eventDateTime = eventDateTimeInput.text.toString()
 
+        val eventDate: Date
+        try {
+            eventDate = dateFormat.parse(eventDateTime)!!
+        } catch (e: Exception) {
+            Toast.makeText(context, "Invalid date and time format", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val eventTimestamp = Timestamp(eventDate)
+
         if (this::imageUri.isInitialized) {
             val storageRef = FirebaseStorage.getInstance().reference.child("event_images/${UUID.randomUUID()}")
             storageRef.putFile(imageUri)
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventDateTime, uri.toString())
+                        saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, uri.toString())
                     }
                 }
                 .addOnFailureListener {
                     Toast.makeText(context, "Image upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventDateTime, "")
+            saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "")
         }
     }
 
-    private fun saveEventToFirestore(name: String, description: String, donation: Double, location: String, dateTime: String, imageUrl: String) {
+    private fun saveEventToFirestore(name: String, description: String, donation: Double, location: String, dateTime: Timestamp, imageUrl: String) {
         val event = hashMapOf(
             "name" to name,
             "description" to description,

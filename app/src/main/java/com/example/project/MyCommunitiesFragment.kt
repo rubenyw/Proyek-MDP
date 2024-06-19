@@ -63,5 +63,9 @@ class MyCommunitiesFragment : Fragment() {
             val action = MyCommunitiesFragmentDirections.actionMyCommunitiesFragmentToFindCommunityFragment()
             findNavController().navigate(action)
         }
+
+        binding.myCommunitiesBackBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_myCommunitiesFragment_to_homeFragment);
+        }
     }
 }

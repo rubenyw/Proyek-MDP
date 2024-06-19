@@ -4,31 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventItemConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/rounded_background"
+    android:elevation="4dp"
+    android:layout_marginBottom="10dp">
 
     <ImageView
         android:id="@+id/imageViewEventUpcomingPage"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="H,16:9"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
         android:id="@+id/tvEventNameUpcomingPage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="TextView"
+        android:text="Event Name"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageViewEventUpcomingPage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tvLocationUpcomingPage"
@@ -36,17 +45,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:text="TextView"
+        android:text="Location"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvEventDescriptionUpcomingPage"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
-        android:text="TextView"
+        android:text="Event Description"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvEventNameUpcomingPage"
@@ -57,7 +69,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="TextView"
+        android:text="Date"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tvEventDescriptionUpcomingPage"
         app:layout_constraintTop_toBottomOf="@+id/tvEventDescriptionUpcomingPage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

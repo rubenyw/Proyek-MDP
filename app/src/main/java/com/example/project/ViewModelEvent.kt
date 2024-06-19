@@ -12,8 +12,8 @@ import java.util.Locale
 
 class ViewModelEvent : ViewModel() {
 
-    private val _events = MutableLiveData<List<EventClass>>()
-    val events: LiveData<List<EventClass>> get() = _events
+    private val _events = MutableLiveData<List<EventClassUI>>()
+    val events: LiveData<List<EventClassUI>> get() = _events
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -26,13 +26,13 @@ class ViewModelEvent : ViewModel() {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val eventsData = ArrayList<EventClass>()
+                    val eventsData = ArrayList<EventClassUI>()
                     for (document in task.result) {
-                        val timestamp = document.getTimestamp("date")
+                        val timestamp = document.getTimestamp("dateTime") // Ensure the field name matches your Firestore document
                         val date = timestamp?.toDate()
                         val formattedDate = date?.let { formatDate(it) } ?: "Unknown date"
 
-                        val event = EventClass(
+                        val event = EventClassUI(
                             document.id,
                             document.getString("name") ?: "",
                             formattedDate,
@@ -50,7 +50,7 @@ class ViewModelEvent : ViewModel() {
     }
 
     private fun formatDate(date: Date): String {
-        val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val format = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()) // Adjust the date format as needed
         return format.format(date)
     }
 }

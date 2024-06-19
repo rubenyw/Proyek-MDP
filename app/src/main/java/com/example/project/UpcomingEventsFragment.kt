@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,9 +19,11 @@ class UpcomingEventsFragment : Fragment() {
     lateinit var tvUpcomingEventsTitle: TextView
     lateinit var tvLabelUpcomingEvents: TextView
     lateinit var buttonNavToCreateEvent: Button
+    lateinit var buttonNavToBackUpcomingEventPage: Button
     lateinit var adapter: AdapterEvent
-    private var eventsData = ArrayList<EventClass>()
+    private var eventsData = ArrayList<EventClassUI>()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,9 +37,14 @@ class UpcomingEventsFragment : Fragment() {
         tvUpcomingEventsTitle = v.findViewById(R.id.tvUpcomingEventsTitle)
         tvLabelUpcomingEvents = v.findViewById(R.id.tvLabelUpcomingEvents)
         buttonNavToCreateEvent = v.findViewById(R.id.buttonNavToCreateEvent)
+        buttonNavToBackUpcomingEventPage = v.findViewById(R.id.buttonBackUpcomingEventPage)
 
         buttonNavToCreateEvent.setOnClickListener {
             findNavController().navigate(R.id.action_global_createEventFragment)
+        }
+
+        buttonNavToBackUpcomingEventPage.setOnClickListener {
+            findNavController().navigate(R.id.action_global_homeFragment)
         }
 
         rvEventsList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
