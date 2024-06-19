@@ -37,7 +37,7 @@ class participationBookFragment : Fragment() {
     lateinit var btnUpcoming: Button
     lateinit var btnHistory: Button
     lateinit var rvEvent: RecyclerView
-    private lateinit var adapter: AdapterEvent
+    private lateinit var adapter: AdapterEvent2
     private var eventsData = ArrayList<EventClassUI>()
     private var upcomingData = ArrayList<EventClassUI>()
     private var historyData = ArrayList<EventClassUI>()
@@ -53,7 +53,7 @@ class participationBookFragment : Fragment() {
         btnHistory = view.findViewById(R.id.participation_history_btn)
         rvEvent = view.findViewById(R.id.participation_rv)
 
-        adapter = AdapterEvent(requireContext(), upcomingData, findNavController())
+        adapter = AdapterEvent2(requireContext(), upcomingData, findNavController())
         rvEvent.adapter = adapter
         rvEvent.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 

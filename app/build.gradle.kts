@@ -95,4 +95,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("androidx.core:core-splashscreen:1.0.0")
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
+
 }
