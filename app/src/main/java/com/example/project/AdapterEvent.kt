@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class AdapterEvent(var context: Context, var arr: List<EventClass>)
+class AdapterEvent(var context: Context, var arr: List<EventClassUI>)
     : RecyclerView.Adapter<AdapterEvent.DpHolder>() {
 
     class DpHolder(it: View) : RecyclerView.ViewHolder(it) {

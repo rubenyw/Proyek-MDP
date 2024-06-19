@@ -9,97 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CDFC54"
-        android:backgroundTint="#CDFC54">
-
-        <TextView
-            android:id="@+id/textView30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Image of Location"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/etDonationCreateEvent"
-            app:layout_constraintTop_toBottomOf="@+id/etDonationCreateEvent" />
-
-        <EditText
-            android:id="@+id/etDateTimeCreateEvent"
-            android:layout_width="0dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="10dp"
-            android:background="#887979"
-            android:ems="10"
-            android:inputType="datetime|date"
-            app:layout_constraintEnd_toEndOf="@+id/etEventName"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/etEventName"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
-        <EditText
-            android:id="@+id/etLocationCreateEvent"
-            android:layout_width="0dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="10dp"
-            android:background="#887979"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@+id/etEventName"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/etEventName"
-            app:layout_constraintTop_toBottomOf="@+id/textView27" />
-
-        <EditText
-            android:id="@+id/etDonationCreateEvent"
-            android:layout_width="0dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="10dp"
-            android:background="#887979"
-            android:ems="10"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/etEventName"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/etEventName"
-            app:layout_constraintTop_toBottomOf="@+id/textView28" />
-
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Initial Donation"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/etLocationCreateEvent"
-            app:layout_constraintTop_toBottomOf="@+id/etLocationCreateEvent" />
-
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Date and Time"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/etEventDescription"
-            app:layout_constraintTop_toBottomOf="@+id/etEventDescription" />
-
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Location"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/etDateTimeCreateEvent"
-            app:layout_constraintTop_toBottomOf="@+id/etDateTimeCreateEvent" />
+        android:background="#CDFC54">
 
         <TextView
             android:id="@+id/tvTitleCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Create Event"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,67 +28,150 @@
             android:id="@+id/buttonBackCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginTop="-10dp"
             android:backgroundTint="#D3A6A6"
             android:text="Back"
-            app:iconTint="#D67474"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvTitleCreateEvent" />
 
-        <TextView
-            android:id="@+id/tvLabelEventNameCreateEventPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Event Name"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/tvTitleCreateEvent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleCreateEvent" />
-
-        <EditText
-            android:id="@+id/etEventName"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEventName"
             android:layout_width="0dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="10dp"
-            android:background="#887979"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@+id/buttonBackCreateEvent"
-            app:layout_constraintStart_toStartOf="@+id/tvLabelEventNameCreateEventPage"
-            app:layout_constraintTop_toBottomOf="@+id/tvLabelEventNameCreateEventPage" />
-
-        <TextView
-            android:id="@+id/tvLabelEventDescriptionCreateEventPage"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginTop="15dp"
-            android:text="Event Description"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/tvLabelEventNameCreateEventPage"
-            app:layout_constraintTop_toBottomOf="@+id/etEventName" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleCreateEvent">
 
-        <EditText
-            android:id="@+id/etEventDescription"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Event Name"
+                android:backgroundTint="@android:color/darker_gray"
+                android:textColor="@android:color/black"
+                android:padding="10dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEventDescription"
             android:layout_width="0dp"
-            android:layout_height="66dp"
-            android:layout_marginTop="10dp"
-            android:background="#887979"
-            android:ems="10"
-            android:inputType="text"
-            android:singleLine="false"
-            app:layout_constraintEnd_toEndOf="@+id/etEventName"
-            app:layout_constraintStart_toStartOf="@+id/etEventName"
-            app:layout_constraintTop_toBottomOf="@+id/tvLabelEventDescriptionCreateEventPage" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilEventName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Event Description"
+                android:backgroundTint="@android:color/darker_gray"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:textColor="@android:color/black"
+                android:padding="10dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilEventDescription">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDateTimeCreateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date and Time"
+                android:backgroundTint="@android:color/darker_gray"
+                android:inputType="none"
+                android:textColor="@android:color/black"
+                android:padding="10dp"
+                android:focusable="false"
+                android:clickable="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilDateTime">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLocationCreateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Location"
+                android:backgroundTint="@android:color/darker_gray"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:padding="10dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDonation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilLocation">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDonationCreateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Initial Donation"
+                android:backgroundTint="@android:color/darker_gray"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black"
+                android:padding="10dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:text="Image of Location"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilDonation" />
 
         <Button
             android:id="@+id/buttonUploadImageCreateEventPage"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#D3A6A6"
             android:text="Upload"
-            app:layout_constraintStart_toStartOf="@+id/textView30"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
         <TextView
@@ -177,6 +181,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:text="None"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@+id/buttonUploadImageCreateEventPage"
             app:layout_constraintTop_toTopOf="@+id/buttonUploadImageCreateEventPage" />
 
@@ -186,12 +191,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
             android:backgroundTint="#D3A6A6"
             android:text="Create Event"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
