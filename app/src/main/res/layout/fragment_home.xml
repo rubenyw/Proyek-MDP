@@ -23,7 +23,7 @@
             android:background="#00FFFFFF"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp">
+            android:paddingVertical="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,16 +32,17 @@
 
                 <TextView
                     android:id="@+id/home_username_tv"
-                    android:layout_width="311dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="292dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
                     android:text="Unknown User"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/home_profile_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="46dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
