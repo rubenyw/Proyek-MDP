@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +32,7 @@ class DonateFragment : Fragment() {
 
     lateinit var etAmmount: EditText
     lateinit var btnConfirm: Button
-    lateinit var btnBack: Button
+    lateinit var btnBack: ImageButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
