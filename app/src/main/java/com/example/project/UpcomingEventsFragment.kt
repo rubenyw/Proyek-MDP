@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ class UpcomingEventsFragment : Fragment() {
     lateinit var buttonNavToCreateEvent: Button
     lateinit var buttonNavToBackUpcomingEventPage: Button
     lateinit var adapter: AdapterEvent
-    private lateinit var navController: NavController
     private var eventsData = ArrayList<EventClassUI>()
 
     @SuppressLint("MissingInflatedId")
@@ -49,10 +47,8 @@ class UpcomingEventsFragment : Fragment() {
             findNavController().navigate(R.id.action_global_homeFragment)
         }
 
-        navController = findNavController()
-        val action = UpcomingEventsFragmentDirections
         rvEventsList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapter = AdapterEvent(requireContext(), eventsData, navController)
+        adapter = AdapterEvent(requireContext(), eventsData)
         rvEventsList.adapter = adapter
 
         vmEvent.events.observe(viewLifecycleOwner, { eventList ->

@@ -22,9 +22,7 @@ class ViewModelEvent : ViewModel() {
     }
 
     private fun fetchEvents() {
-        val currentDateTime = Date()
         db.collection("events")
-            .whereGreaterThan("dateTime", currentDateTime)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -40,8 +38,7 @@ class ViewModelEvent : ViewModel() {
                             formattedDate,
                             document.getString("location") ?: "",
                             document.getString("description") ?: "",
-                            document.getString("imageUrl") ?: "",
-                            document.getLong("donation")?.toInt() ?: 0,
+                            document.getString("imageUrl") ?: ""
                         )
                         eventsData.add(event)
                     }

@@ -65,12 +65,7 @@
         android:id="@+id/upcomingEventsFragment"
         android:name="com.example.project.UpcomingEventsFragment"
         android:label="fragment_upcoming_events"
-        tools:layout="@layout/fragment_upcoming_events" >
-        <action
-            android:id="@+id/action_upcomingEventsFragment_to_eventDetailFragment"
-            app:destination="@id/eventDetailFragment">
-        </action>
-    </fragment>
+        tools:layout="@layout/fragment_upcoming_events" />
     <action
         android:id="@+id/action_global_upcomingEventsFragment"
         app:destination="@id/upcomingEventsFragment"
