@@ -11,18 +11,18 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/floatingActionButtonBackEventDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/imageViewEventDetailPage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewEventDetailPage"
             android:layout_width="0dp"
             android:layout_height="250dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,12 +35,88 @@
             android:id="@+id/tvTitleEventDetailPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:text="Event Detail Title"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewEventDetailPage" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Schedule: "
+            app:layout_constraintStart_toStartOf="@+id/tvDescriptionEventDetailPage"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleEventDetailPage" />
+
+        <TextView
+            android:id="@+id/tvDateTimeEventDetailPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/tvDescriptionEventDetailPage"
+            android:layout_width="0dp"
+            android:layout_height="183dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Current Donation: "
+            app:layout_constraintStart_toStartOf="@+id/tvDescriptionEventDetailPage"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescriptionEventDetailPage" />
+
+        <TextView
+            android:id="@+id/tvDonationEventDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/textView27"
+            app:layout_constraintTop_toTopOf="@+id/textView27" />
+
+        <TextView
+            android:id="@+id/tvLocationEventDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvDateTimeEventDetailPage" />
+
+        <Button
+            android:id="@+id/buttonDonateEventDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="20dp"
+            android:text="Donate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/buttonJoinEventDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Join Event"
+            app:layout_constraintStart_toEndOf="@+id/buttonDonateEventDetail"
+            app:layout_constraintTop_toTopOf="@+id/buttonDonateEventDetail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
