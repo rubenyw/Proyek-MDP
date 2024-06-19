@@ -65,7 +65,12 @@
         android:id="@+id/upcomingEventsFragment"
         android:name="com.example.project.UpcomingEventsFragment"
         android:label="fragment_upcoming_events"
-        tools:layout="@layout/fragment_upcoming_events" />
+        tools:layout="@layout/fragment_upcoming_events" >
+        <action
+            android:id="@+id/action_upcomingEventsFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment">
+        </action>
+    </fragment>
     <action
         android:id="@+id/action_global_upcomingEventsFragment"
         app:destination="@id/upcomingEventsFragment"
@@ -106,5 +111,61 @@
         android:name="com.example.project.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" /><action android:id="@+id/action_global_editProfileFragment" app:destination="@id/editProfileFragment"/>
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.example.project.EventDetailFragment"
+        android:label="fragment_event_detail"
+        tools:layout="@layout/fragment_event_detail">
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+        <argument
+            android:name="eventName"
+            app:argType="string" />
+        <argument
+            android:name="eventLocation"
+            app:argType="string" />
+        <argument
+            android:name="eventDate"
+            app:argType="string" />
+        <argument
+            android:name="eventDescription"
+            app:argType="string" />
+        <argument
+            android:name="eventImageUrl"
+            app:argType="string" />
+        <argument
+            android:name="eventDonation"
+            app:argType="integer" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_eventDetailFragment"
+        app:destination="@id/eventDetailFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@animator/nav_default_exit_anim"
+        app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+        app:popExitAnim="@animator/nav_default_pop_exit_anim">
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+        <argument
+            android:name="eventName"
+            app:argType="string" />
+        <argument
+            android:name="eventLocation"
+            app:argType="string" />
+        <argument
+            android:name="eventDate"
+            app:argType="string" />
+        <argument
+            android:name="eventDescription"
+            app:argType="string" />
+        <argument
+            android:name="eventImageUrl"
+            app:argType="string" />
+        <argument
+            android:name="eventDonation"
+            app:argType="integer" />
+    </action>
 
 </navigation>
