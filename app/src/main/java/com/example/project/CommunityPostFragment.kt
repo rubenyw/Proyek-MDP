@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project.databinding.FragmentCommunitiesPostsBinding
 import androidx.navigation.fragment.navArgs
@@ -64,6 +65,10 @@ class CommunityPostFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.postCommunityBackBtn.setOnClickListener{
+            findNavController().navigate(R.id.action_global_myCommunitiesFragment);
         }
     }
 }

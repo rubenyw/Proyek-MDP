@@ -48,7 +48,7 @@ class DonateFragment : Fragment() {
 
         btnConfirm = view.findViewById(R.id.donate_topup_btn)
         etAmmount = view.findViewById(R.id.donate_ammount_et)
-        btnBack = view.findViewById(R.id.topup_back_btn);
+        btnBack = view.findViewById(R.id.donate_back_btn);
 
         btnConfirm.setOnClickListener {
             if (etAmmount.text.isNullOrBlank()) {
