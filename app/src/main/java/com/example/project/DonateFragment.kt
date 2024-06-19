@@ -31,6 +31,7 @@ class DonateFragment : Fragment() {
 
     lateinit var etAmmount: EditText
     lateinit var btnConfirm: Button
+    lateinit var btnBack: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +47,7 @@ class DonateFragment : Fragment() {
 
         btnConfirm = view.findViewById(R.id.donate_topup_btn)
         etAmmount = view.findViewById(R.id.donate_ammount_et)
+        btnBack = view.findViewById(R.id.topup_back_btn);
 
         btnConfirm.setOnClickListener {
             if (etAmmount.text.isNullOrBlank()) {
@@ -54,6 +56,10 @@ class DonateFragment : Fragment() {
                 val amount = etAmmount.text.toString().toDouble()
                 updateSaldo(userId, amount)
             }
+        }
+
+        btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_global_homeFragment);
         }
     }
 
