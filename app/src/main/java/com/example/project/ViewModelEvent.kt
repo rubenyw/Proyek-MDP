@@ -10,6 +10,11 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ViewModelEvent : ViewModel() {
 
@@ -62,5 +67,46 @@ class ViewModelEvent : ViewModel() {
         val localeID = Locale("in", "ID")
         val numberFormat = NumberFormat.getCurrencyInstance(localeID)
         return numberFormat.format(amount)
+    }
+
+    fun processDonation(userId: String, eventId: String, donationAmount: Int, onSuccess: (newDonation: Long) -> Unit, onFailure: (errorMessage: String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val userDoc = db.collection("users").document(userId).get().await()
+                val eventDoc = db.collection("events").document(eventId).get().await()
+
+                if (userDoc.exists() && eventDoc.exists()) {
+                    val userSaldo = userDoc.getLong("saldo") ?: 0L
+                    val currentDonation = eventDoc.getLong("donation") ?: 0L
+
+                    if (userSaldo >= donationAmount) {
+                        val newSaldo = userSaldo - donationAmount
+                        val newDonation = currentDonation + donationAmount
+
+                        db.runBatch { batch ->
+                            batch.update(db.collection("users").document(userId), "saldo", newSaldo)
+                            batch.update(db.collection("events").document(eventId), "donation", newDonation)
+                        }.await()
+
+                        withContext(Dispatchers.Main) {
+                            onSuccess(newDonation)
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            onFailure("Insufficient balance to make the donation.")
+                        }
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onFailure("User or event data not found.")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    onFailure("Failed to process donation. Please try again.")
+                }
+            }
+        }
     }
 }

@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -32,6 +34,7 @@ class EventDetailFragment : Fragment() {
     private lateinit var tvDonation: TextView
     private lateinit var buttonDonate: Button
     private lateinit var buttonJoin: Button
+    private lateinit var editTextDonationAmount: EditText
     private lateinit var eventId: String
     private lateinit var eventName: String
     private lateinit var eventLocation: String
@@ -43,6 +46,7 @@ class EventDetailFragment : Fragment() {
     private lateinit var db: AppDatabase
     private lateinit var userId: String
     private lateinit var firestore: FirebaseFirestore
+    private val vmEvent: ViewModelEvent by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,8 +82,6 @@ class EventDetailFragment : Fragment() {
             }
         }
 
-        val vmEvent: ViewModelEvent by viewModels()
-
         buttonBack = v.findViewById(R.id.floatingActionButtonBackEventDetail)
         buttonDonate = v.findViewById(R.id.buttonDonateEventDetail)
         buttonJoin = v.findViewById(R.id.buttonJoinEventDetails)
@@ -89,6 +91,7 @@ class EventDetailFragment : Fragment() {
         tvDonation = v.findViewById(R.id.tvDonationEventDetail)
         tvLocation = v.findViewById(R.id.tvLocationEventDetail)
         tvSchedule = v.findViewById(R.id.tvDateTimeEventDetailPage)
+        editTextDonationAmount = v.findViewById(R.id.editTextNumberSigned2)
 
         tvTitle.setText(eventName)
         tvDescription.setText(eventDescription)
@@ -105,7 +108,26 @@ class EventDetailFragment : Fragment() {
         }
 
         buttonDonate.setOnClickListener {
-
+            buttonDonate.setOnClickListener {
+                coroutine.launch {
+                    val donationAmount = editTextDonationAmount.text.toString().toIntOrNull()
+                    if (donationAmount != null) {
+                        vmEvent.processDonation(userId, eventId, donationAmount,
+                            onSuccess = { newDonation ->
+                                tvDonation.text = vmEvent.formatRupiah(newDonation.toInt())
+                                Toast.makeText(context, "Donation successful!", Toast.LENGTH_SHORT).show()
+                            },
+                            onFailure = { errorMessage ->
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Please enter a valid donation amount.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         buttonJoin.setOnClickListener {
@@ -142,11 +164,13 @@ class EventDetailFragment : Fragment() {
                 .await()
             withContext(Dispatchers.Main) {
                 // Notify the user about successful participation
+                Toast.makeText(context, "Successfully joined the event!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
                 // Notify the user about the failure
+                Toast.makeText(context, "Failed to join the event. Please try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }
