@@ -114,7 +114,7 @@ class participationBookFragment : Fragment() {
                         formattedDate,
                         document.getString("location") ?: "",
                         document.getString("description") ?: "",
-                        document.getString("urlLink") ?: ""
+                        document.getString("imageUrl") ?: ""
                     )
                     eventsData.add(event)
                 }
