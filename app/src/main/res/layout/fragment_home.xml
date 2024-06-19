@@ -13,6 +13,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:background="#00F8F7F7"
         app:cardCornerRadius="20dp">
 
@@ -31,7 +32,7 @@
 
                 <TextView
                     android:id="@+id/home_username_tv"
-                    android:layout_width="283dp"
+                    android:layout_width="311dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Unknown User"
@@ -39,11 +40,12 @@
                     android:textStyle="bold" />
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/home_profile_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/baseline_arrow_back_24" />
+                    android:background="#00FFFFFF"
+                    android:src="@drawable/baseline_person_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -60,7 +62,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/home_saldo_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
@@ -90,7 +92,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
-                            android:id="@+id/imageButton1"
+                            android:id="@+id/home_history_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -113,7 +115,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
-                            android:id="@+id/imageButton2"
+                            android:id="@+id/home_topup_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -135,7 +137,7 @@
                         android:orientation="vertical">
 
                         <ImageButton
-                            android:id="@+id/imageButton3"
+                            android:id="@+id/home_withdraw_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -159,7 +161,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:orientation="horizontal">
 

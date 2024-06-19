@@ -167,5 +167,24 @@
             android:name="eventDonation"
             app:argType="integer" />
     </action>
+        android:id="@+id/donateFragment"
+        android:name="com.example.project.DonateFragment"
+        android:label="fragment_donate"
+        tools:layout="@layout/fragment_donate" />
+    <action android:id="@+id/action_global_donateFragment" app:destination="@id/donateFragment" />
+    <fragment
+        android:id="@+id/withdrawFragment"
+        android:name="com.example.project.withdrawFragment"
+        android:label="fragment_withdraw"
+        tools:layout="@layout/fragment_withdraw" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.project.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment><action android:id="@+id/action_global_withdrawFragment" app:destination="@id/withdrawFragment"/><action android:id="@+id/action_global_historyFragment" app:destination="@id/historyFragment"/>
 
 </navigation>
