@@ -8,14 +8,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class AdapterEvent(var context: Context, var arr: List<EventClassUI>, private val navController: NavController)
+class AdapterEvent(var context: Context, var arr: List<EventClassUI>)
     : RecyclerView.Adapter<AdapterEvent.DpHolder>() {
 
     class DpHolder(it: View) : RecyclerView.ViewHolder(it) {
@@ -46,17 +43,7 @@ class AdapterEvent(var context: Context, var arr: List<EventClassUI>, private va
             .load(arr[position].urlLink)  // Ensure imageUrl is a property of EventClass
             .into(holder.imageEvent)
         holder.mycons.setOnClickListener(View.OnClickListener {
-            val event = arr[position]
-            val action = UpcomingEventsFragmentDirections.actionGlobalEventDetailFragment(
-                event.id,
-                event.name,
-                event.location,
-                event.date,
-                event.description,
-                event.urlLink,
-                event.donation,
-            )
-            navController.navigate(action)
+//            (context as MainActivity).openDetail(arr[position])
         })
     }
 
