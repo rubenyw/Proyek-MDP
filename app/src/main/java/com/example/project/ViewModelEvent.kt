@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.Timestamp
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -52,8 +53,14 @@ class ViewModelEvent : ViewModel() {
             }
     }
 
-    private fun formatDate(date: Date): String {
+    fun formatDate(date: Date): String {
         val format = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()) // Adjust the date format as needed
         return format.format(date)
+    }
+
+    fun formatRupiah(amount: Int): String {
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+        return numberFormat.format(amount)
     }
 }

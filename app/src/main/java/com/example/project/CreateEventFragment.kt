@@ -83,7 +83,7 @@ class CreateEventFragment : Fragment() {
         return v
     }
 
-    private fun showDatePickerDialog() {
+    fun showDatePickerDialog() {
         val currentDate = Calendar.getInstance()
         DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
             TimePickerDialog(requireContext(), { _, hourOfDay, minute ->

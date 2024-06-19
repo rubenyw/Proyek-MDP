@@ -8,21 +8,30 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.text.NumberFormat
 import java.util.Locale
 
 class EventDetailFragment : Fragment() {
 
-    lateinit var buttonBack: FloatingActionButton
-    lateinit var imageViewEventImage: ImageView
-    lateinit var tvTitle: TextView
-    lateinit var tvLocation: TextView
-    lateinit var tvSchedule: TextView
-    lateinit var tvDescription: TextView
-    lateinit var tvDonation: TextView
+    private lateinit var buttonBack: FloatingActionButton
+    private lateinit var imageViewEventImage: ImageView
+    private lateinit var tvTitle: TextView
+    private lateinit var tvLocation: TextView
+    private lateinit var tvSchedule: TextView
+    private lateinit var tvDescription: TextView
+    private lateinit var tvDonation: TextView
+    private lateinit var buttonDonate: Button
+    private lateinit var buttonJoin: Button
     private lateinit var eventId: String
     private lateinit var eventName: String
     private lateinit var eventLocation: String
@@ -30,6 +39,10 @@ class EventDetailFragment : Fragment() {
     private lateinit var eventDescription: String
     private lateinit var eventImageUrl: String
     private lateinit var eventDonation: String
+    private val coroutine = CoroutineScope(Dispatchers.IO)
+    private lateinit var db: AppDatabase
+    private lateinit var userId: String
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +64,25 @@ class EventDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_event_detail, container, false)
 
+        db = AppDatabase.build(this.requireActivity())
+        firestore = FirebaseFirestore.getInstance()
+        coroutine.launch {
+            val users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                val name = users[0].name
+                userId = users[0].id
+                fetchUserData(userId)
+                withContext(Dispatchers.Main) {
+
+                }
+            }
+        }
+
+        val vmEvent: ViewModelEvent by viewModels()
+
         buttonBack = v.findViewById(R.id.floatingActionButtonBackEventDetail)
+        buttonDonate = v.findViewById(R.id.buttonDonateEventDetail)
+        buttonJoin = v.findViewById(R.id.buttonJoinEventDetails)
         imageViewEventImage = v.findViewById(R.id.imageViewEventDetailPage)
         tvTitle = v.findViewById(R.id.tvTitleEventDetailPage)
         tvDescription = v.findViewById(R.id.tvDescriptionEventDetailPage)
@@ -63,7 +94,7 @@ class EventDetailFragment : Fragment() {
         tvDescription.setText(eventDescription)
         tvSchedule.setText(eventDate)
         tvLocation.setText(eventLocation)
-        tvDonation.text = formatRupiah(eventDonation.toInt())
+        tvDonation.text = vmEvent.formatRupiah(eventDonation.toInt())
 
         Glide.with(this)
             .load(eventImageUrl)
@@ -73,12 +104,50 @@ class EventDetailFragment : Fragment() {
             findNavController().navigate(R.id.action_global_upcomingEventsFragment)
         }
 
+        buttonDonate.setOnClickListener {
+
+        }
+
+        buttonJoin.setOnClickListener {
+            coroutine.launch {
+                saveEventParticipant(userId, eventId)
+            }
+        }
+
         return v
     }
 
-    private fun formatRupiah(amount: Int): String {
-        val localeID = Locale("in", "ID")
-        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
-        return numberFormat.format(amount)
+    private suspend fun fetchUserData(id: String) {
+        try {
+            val documentSnapshot = firestore.collection("users").document(id).get().await()
+            if (documentSnapshot.exists()) {
+                val userData = documentSnapshot.data
+                withContext(Dispatchers.Main) {
+
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private suspend fun saveEventParticipant(userId: String, eventId: String) {
+        try {
+            val participantData = hashMapOf(
+                "userId" to userId,
+                "eventId" to eventId
+            )
+            firestore.collection("event_participants")
+                .add(participantData)
+                .await()
+            withContext(Dispatchers.Main) {
+                // Notify the user about successful participation
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            withContext(Dispatchers.Main) {
+                // Notify the user about the failure
+            }
+        }
     }
 }
