@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
@@ -21,6 +21,14 @@
             android:layout_marginRight="250dp"
             android:text="Hello,"
             android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/home_profile_btn"
+            android:layout_width="74dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_person_24" />
 
     </LinearLayout>
 
@@ -52,7 +60,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/home_saldo_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
@@ -68,7 +76,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/home_history_btn"
                 android:layout_width="60dp"
                 android:layout_height="54dp"
                 android:src="@drawable/baseline_give" />
@@ -89,7 +97,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/home_topup_btn"
                 android:layout_width="60dp"
                 android:layout_height="54dp"
                 android:src="@drawable/baseline_give" />
@@ -109,7 +117,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/home_withdraw_btn"
                 android:layout_width="60dp"
                 android:layout_height="54dp"
                 android:src="@drawable/baseline_give" />
