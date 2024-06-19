@@ -33,6 +33,11 @@ class AdapterEvent(var context: Context, var arr: List<EventClassUI>)
         return arr.size
     }
 
+    fun updateData(newData: List<EventClassUI>) {
+        arr = newData
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: DpHolder, position: Int) {
         holder.txtName.setText(arr[position].name.toString())
         holder.txtLocation.setText(arr[position].location.toString())

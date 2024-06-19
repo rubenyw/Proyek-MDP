@@ -46,6 +46,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/participation_rv"
         android:layout_width="390dp"
         android:layout_height="635dp"
         app:layout_constraintBottom_toBottomOf="parent"
