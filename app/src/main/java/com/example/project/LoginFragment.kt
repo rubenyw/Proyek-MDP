@@ -63,6 +63,7 @@ class LoginFragment : Fragment() {
                                         )
 
                                         coroutine.launch {
+                                            db.userDAO().deleteAll();
                                             db.userDAO().insert(userLogin)
                                             withContext(Dispatchers.Main) {
                                                 val intent = Intent(requireActivity(), MainActivity::class.java)
