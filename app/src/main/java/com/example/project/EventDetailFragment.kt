@@ -130,11 +130,7 @@ class EventDetailFragment : Fragment() {
             }
         }
 
-        buttonJoin.setOnClickListener {
-            coroutine.launch {
-                saveEventParticipant(userId, eventId)
-            }
-        }
+        checkUserParticipation()
 
         return v
     }
@@ -153,7 +149,39 @@ class EventDetailFragment : Fragment() {
         }
     }
 
-    private suspend fun saveEventParticipant(userId: String, eventId: String) {
+    private fun checkUserParticipation() {
+        coroutine.launch {
+            try {
+                val participants = firestore.collection("event_participants")
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("eventId", eventId)
+                    .get()
+                    .await()
+
+                withContext(Dispatchers.Main) {
+                    if (participants.isEmpty) {
+                        buttonJoin.text = "Join"
+                        buttonJoin.setOnClickListener {
+                            coroutine.launch {
+                                joinEvent()
+                            }
+                        }
+                    } else {
+                        buttonJoin.text = "Leave"
+                        buttonJoin.setOnClickListener {
+                            coroutine.launch {
+                                leaveEvent()
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun joinEvent() {
         try {
             val participantData = hashMapOf(
                 "userId" to userId,
@@ -163,14 +191,47 @@ class EventDetailFragment : Fragment() {
                 .add(participantData)
                 .await()
             withContext(Dispatchers.Main) {
-                // Notify the user about successful participation
+                buttonJoin.text = "Leave"
+                buttonJoin.setOnClickListener {
+                    coroutine.launch {
+                        leaveEvent()
+                    }
+                }
                 Toast.makeText(context, "Successfully joined the event!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
-                // Notify the user about the failure
                 Toast.makeText(context, "Failed to join the event. Please try again.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private suspend fun leaveEvent() {
+        try {
+            val participantQuery = firestore.collection("event_participants")
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .await()
+
+            for (document in participantQuery.documents) {
+                firestore.collection("event_participants").document(document.id).delete().await()
+            }
+
+            withContext(Dispatchers.Main) {
+                buttonJoin.text = "Join"
+                buttonJoin.setOnClickListener {
+                    coroutine.launch {
+                        joinEvent()
+                    }
+                }
+                Toast.makeText(context, "Successfully left the event.", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Failed to leave the event. Please try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }
