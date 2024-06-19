@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
@@ -33,12 +34,12 @@ class ProfileFragment : Fragment() {
     lateinit var tvUsername: TextView
     lateinit var tvEmail: TextView
     lateinit var book: ConstraintLayout
-    lateinit var edit: ConstraintLayout
+    lateinit var edit: ImageButton
     lateinit var logout: ConstraintLayout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         tvName = view.findViewById(R.id.profile_name_tv)
-        tvUsername = view.findViewById(R.id.profile_username_tv)
+//        tvUsername = view.findViewById(R.id.profile_username_tv)
         tvEmail = view.findViewById(R.id.profile_email_tv)
         db = AppDatabase.build(this.requireActivity())
         firestore = FirebaseFirestore.getInstance()
@@ -76,7 +77,7 @@ class ProfileFragment : Fragment() {
                 val userData = documentSnapshot.data
                 withContext(Dispatchers.Main) {
                     tvName.text = userData?.get("name") as? String
-                    tvUsername.text = userData?.get("username") as? String
+//                    tvUsername.text = userData?.get("username") as? String
                     tvEmail.text = userData?.get("email") as? String
                 }
             }

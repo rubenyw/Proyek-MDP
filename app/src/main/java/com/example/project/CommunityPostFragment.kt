@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project.databinding.FragmentCommunitiesPostsBinding
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,6 +27,7 @@ class CommunityPostFragment : Fragment() {
     val vm:CommunityViewModel by viewModels()
     val navArgs:CommunityPostFragmentArgs by navArgs()
     private lateinit var db: AppDatabase
+    private lateinit var firestore: FirebaseFirestore
     private val coroutine = CoroutineScope(Dispatchers.IO)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +52,25 @@ class CommunityPostFragment : Fragment() {
         vm.communityPosts.observe(viewLifecycleOwner, Observer { posts ->
             communityPostAdapter.submitList(posts)
         })
+
+        firestore = FirebaseFirestore.getInstance()
+
+        coroutine.launch {
+            try {
+                val snapshot = firestore.collection("communities").document(id).get().await()
+                if (snapshot.exists()) {
+                    val community = snapshot.toObject(CommunityEntity::class.java)
+                    withContext(Dispatchers.Main) {
+                        binding.postCommunityTitleTv.text = community?.name
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    // Handle the error, e.g., show a toast
+                    Mekanisme.showToast(requireContext(), "Error fetching community");
+                }
+            }
+        }
 
         binding.btnSendPost.setOnClickListener {
             db = AppDatabase.build(this.requireActivity())
