@@ -167,6 +167,7 @@
             android:name="eventDonation"
             app:argType="integer" />
     </action>
+    <fragment
         android:id="@+id/donateFragment"
         android:name="com.example.project.DonateFragment"
         android:label="fragment_donate"
