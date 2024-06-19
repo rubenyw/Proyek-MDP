@@ -1,7 +1,6 @@
 package com.example.project
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,49 +40,31 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = AppDatabase.build(requireActivity())
+        db = AppDatabase.build(this.requireActivity())
         firestore = FirebaseFirestore.getInstance()
         userId = ""
 
         coroutine.launch {
-            try {
-                val users = db.userDAO().fetch()
-                if (users.isNotEmpty()) {
-                    userId = users[0].id
-                }
+            val users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                userId = users[0].id
+            }
 
-                val donationsRef = firestore.collection("donationHistory")
-                    .whereEqualTo("userId", userId)
+            val donationsRef = firestore.collection("donationHistory")
+                .whereEqualTo("userId", userId)
 
-                val snapshot = donationsRef.get().await()
+            val snapshot = donationsRef.get().await()
+            val donations = snapshot.toObjects(DonationHistoryEntity::class.java)
 
-                if (snapshot.isEmpty) {
-                    // Handle case where no donation history is found for the user
-                    Log.d(TAG, "No donation history found for userId: $userId")
-                    return@launch
-                }
-
-                val donations = snapshot.toObjects(DonationHistoryEntity::class.java)
-
-                withContext(Dispatchers.Main) {
-                    val historyAdapter = HistoryAdapter(donations)
-                    binding.rvDonation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                    binding.rvDonation.adapter = historyAdapter
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error fetching donation history", e)
-                withContext(Dispatchers.Main) {
-                    Mekanisme.showToast(requireContext(), "Error fetching donation history");
-                }
+            withContext(Dispatchers.Main) {
+                val historyAdapter = HistoryAdapter(donations)
+                binding.rvDonation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                binding.rvDonation.adapter = historyAdapter
             }
         }
 
-        binding.historyBackBtn.setOnClickListener {
+        binding.historyBackBtn.setOnClickListener{
             findNavController().navigate(R.id.action_historyFragment_to_homeFragment)
         }
-    }
-
-    companion object {
-        private const val TAG = "HistoryFragment"
     }
 }
