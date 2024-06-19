@@ -53,7 +53,11 @@
         android:id="@+id/findCommunityFragment"
         android:name="com.example.project.FindCommunityFragment"
         android:label="fragment_find_community"
-        tools:layout="@layout/fragment_find_community" />
+        tools:layout="@layout/fragment_find_community" >
+        <action
+            android:id="@+id/action_findCommunityFragment_to_myCommunitiesFragment"
+            app:destination="@id/myCommunitiesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/upcomingEventsFragment"
         android:name="com.example.project.UpcomingEventsFragment"

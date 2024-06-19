@@ -77,5 +77,9 @@ class FindCommunityFragment : Fragment() {
                 communityAdapter.submitList(filteredCommunities)
             }
         })
+
+        binding.findCommunityBackBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_findCommunityFragment_to_myCommunitiesFragment);
+        }
     }
 }
