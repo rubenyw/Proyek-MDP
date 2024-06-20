@@ -2,6 +2,7 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import org.w3c.dom.Text
 
 class ProfileFragment : Fragment() {
     private lateinit var db: AppDatabase
@@ -36,10 +38,14 @@ class ProfileFragment : Fragment() {
     lateinit var book: ConstraintLayout
     lateinit var edit: ImageButton
     lateinit var logout: ConstraintLayout
+    lateinit var tvParticipation: TextView
+    lateinit var tvCommunity: TextView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         tvName = view.findViewById(R.id.profile_name_tv)
 //        tvUsername = view.findViewById(R.id.profile_username_tv)
+        tvParticipation = view.findViewById(R.id.profile_participation_tv)
+        tvCommunity = view.findViewById(R.id.profile_community_tv)
         tvEmail = view.findViewById(R.id.profile_email_tv)
         db = AppDatabase.build(this.requireActivity())
         firestore = FirebaseFirestore.getInstance()
@@ -72,17 +78,41 @@ class ProfileFragment : Fragment() {
 
     private suspend fun fetchUserData(id: String) {
         try {
-            val documentSnapshot = firestore.collection("users").document(id).get().await()
-            if (documentSnapshot.exists()) {
-                val userData = documentSnapshot.data
+            val userDocument = firestore.collection("users").document(id).get().await()
+            if (userDocument.exists()) {
+                val userData = userDocument.data
                 withContext(Dispatchers.Main) {
                     tvName.text = userData?.get("name") as? String
-//                    tvUsername.text = userData?.get("username") as? String
                     tvEmail.text = userData?.get("email") as? String
                 }
             }
+
+            val communityQuerySnapshot = firestore.collection("community_member")
+                .whereEqualTo("userId", id)
+                .get()
+                .await()
+
+            val communitySize = communityQuerySnapshot.size()
+
+            val participationQuerySnapshot = firestore.collection("event_participants")
+                .whereEqualTo("userId", id)
+                .get()
+                .await()
+
+            val participationSize = participationQuerySnapshot.size()
+
+            Log.d("TVParticipation",participationSize.toString())
+            Log.d("TVCommunity",communitySize.toString())
+            withContext(Dispatchers.Main) {
+                tvCommunity.text = communitySize.toString()
+                tvParticipation.text= participationSize.toString()
+//                tvCommunity.text = "3"
+//                tvParticipation.text= "3"
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
 }

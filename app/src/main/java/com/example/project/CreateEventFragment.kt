@@ -1,5 +1,6 @@
 package com.example.project
 
+import ViewModelCreateEvent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -21,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.ProgressBar
 import androidx.fragment.app.viewModels
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -39,20 +41,16 @@ class CreateEventFragment : Fragment() {
     lateinit var eventImageButton: Button
     lateinit var eventImageName: TextView
     lateinit var createEventButton: Button
+    lateinit var progressBar: ProgressBar
 
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
     private val vmEvent: ViewModelCreateEvent by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_create_event, container, false)
 
         backButton = v.findViewById(R.id.buttonBackCreateEvent)
@@ -64,6 +62,7 @@ class CreateEventFragment : Fragment() {
         eventImageButton = v.findViewById(R.id.buttonUploadImageCreateEventPage)
         eventImageName = v.findViewById(R.id.tvImageNameCreateEvent)
         createEventButton = v.findViewById(R.id.buttonCreateEventCreateEventPage)
+        progressBar = v.findViewById(R.id.progressBar)
 
         eventImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -81,6 +80,22 @@ class CreateEventFragment : Fragment() {
         eventDateTimeInput.setOnClickListener {
             showDatePickerDialog()
         }
+
+        vmEvent.isLoading.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading) {
+                progressBar.visibility = View.VISIBLE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        })
+
+        vmEvent.eventCreated.observe(viewLifecycleOwner, { eventCreated ->
+            if (eventCreated) {
+                findNavController().navigate(R.id.action_global_upcomingEventsFragment)
+            } else {
+                Toast.makeText(context, "Failed to create event", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         return v
     }
