@@ -91,6 +91,16 @@ class ViewModelEvent : ViewModel() {
                         withContext(Dispatchers.Main) {
                             onSuccess(newDonation)
                         }
+
+                        val historyDonation = hashMapOf(
+                            "ammount" to donationAmount.toString(),
+                            "eventId" to eventId,
+                            "message" to "HAi",
+                            "time" to Timestamp.now(),
+                            "userId" to userId
+                        )
+                        db.collection("donationHistory")
+                            .add(historyDonation);
                     } else {
                         withContext(Dispatchers.Main) {
                             onFailure("Insufficient balance to make the donation.")
