@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.fragment.app.viewModels
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 
@@ -41,6 +42,7 @@ class CreateEventFragment : Fragment() {
 
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    private val vmEvent: ViewModelCreateEvent by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,39 +120,9 @@ class CreateEventFragment : Fragment() {
         val eventTimestamp = Timestamp(eventDate)
 
         if (this::imageUri.isInitialized) {
-            val storageRef = FirebaseStorage.getInstance().reference.child("event_images/${UUID.randomUUID()}")
-            storageRef.putFile(imageUri)
-                .addOnSuccessListener {
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, uri.toString())
-                    }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Image upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
+            vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp)
         } else {
-            saveEventToFirestore(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "")
+            vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "")
         }
-    }
-
-    private fun saveEventToFirestore(name: String, description: String, donation: Double, location: String, dateTime: Timestamp, imageUrl: String) {
-        val event = hashMapOf(
-            "name" to name,
-            "description" to description,
-            "donation" to donation,
-            "location" to location,
-            "dateTime" to dateTime,
-            "imageUrl" to imageUrl
-        )
-
-        FirebaseFirestore.getInstance().collection("events")
-            .add(event)
-            .addOnSuccessListener {
-                Toast.makeText(context, "Event created successfully!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_global_upcomingEventsFragment)
-            }
-            .addOnFailureListener {
-                Toast.makeText(context, "Event creation failed: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 }
