@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,7 @@ class participationBookFragment : Fragment() {
 
     lateinit var btnUpcoming: Button
     lateinit var btnHistory: Button
+    lateinit var btnBack: ImageButton
     lateinit var rvEvent: RecyclerView
     private lateinit var adapter: AdapterEvent2
     private var eventsData = ArrayList<EventClassUI>()
@@ -70,6 +72,11 @@ class participationBookFragment : Fragment() {
             btnHistory.setBackgroundColor(resources.getColor(R.color.default_button_color))
             btnUpcoming.setBackgroundColor(resources.getColor(R.color.gray))
             adapter.updateData(historyData)
+        }
+
+        btnBack = view.findViewById(R.id.btnBack_book)
+        btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_global_profileFragment)
         }
 
         coroutine.launch {
