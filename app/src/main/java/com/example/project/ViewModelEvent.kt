@@ -48,6 +48,7 @@ class ViewModelEvent : ViewModel() {
                             document.getString("description") ?: "",
                             document.getString("imageUrl") ?: "",
                             document.getLong("donation")?.toInt() ?: 0,
+                            document.getLong("participants")?.toInt() ?: 0,
                         )
                         eventsData.add(event)
                     }

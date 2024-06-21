@@ -60,6 +60,7 @@ class AdapterEvent(var context: Context, var arr: List<EventClassUI>, private va
                 event.description,
                 event.urlLink,
                 event.donation,
+                event.participants,
             )
             navController.navigate(action)
         })

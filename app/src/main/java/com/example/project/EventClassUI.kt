@@ -13,4 +13,5 @@ data class EventClassUI(
     var description: String = "",
     var urlLink: String = "",
     var donation: Int = 0,
+    var participants: Int = 0,
 )

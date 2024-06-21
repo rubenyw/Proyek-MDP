@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ class EventDetailFragment : Fragment() {
     private lateinit var tvSchedule: TextView
     private lateinit var tvDescription: TextView
     private lateinit var tvDonation: TextView
+    private lateinit var tvParticipants: TextView
     private lateinit var buttonDonate: Button
     private lateinit var buttonJoin: Button
     private lateinit var editTextDonationAmount: EditText
@@ -42,6 +44,7 @@ class EventDetailFragment : Fragment() {
     private lateinit var eventDescription: String
     private lateinit var eventImageUrl: String
     private lateinit var eventDonation: String
+    private lateinit var eventParticipants: String
     private val coroutine = CoroutineScope(Dispatchers.IO)
     private lateinit var db: AppDatabase
     private lateinit var userId: String
@@ -58,9 +61,11 @@ class EventDetailFragment : Fragment() {
             eventDescription = it.getString("eventDescription") ?: ""
             eventImageUrl = it.getString("eventImageUrl") ?: ""
             eventDonation = it.getInt("eventDonation").toString() ?: ""
+            eventParticipants = it.getInt("eventParticipants").toString() ?: ""
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,6 +96,7 @@ class EventDetailFragment : Fragment() {
         tvDonation = v.findViewById(R.id.tvDonationEventDetail)
         tvLocation = v.findViewById(R.id.tvLocationEventDetail)
         tvSchedule = v.findViewById(R.id.tvDateTimeEventDetailPage)
+        tvParticipants = v.findViewById(R.id.tvParticipantsEventDetail)
         editTextDonationAmount = v.findViewById(R.id.editTextNumberSigned2)
 
         tvTitle.setText(eventName)
@@ -183,13 +189,21 @@ class EventDetailFragment : Fragment() {
 
     private suspend fun joinEvent() {
         try {
+            val eventDocRef = firestore.collection("events").document(eventId)
+            val eventDoc = eventDocRef.get().await()
+            val currentParticipants = eventDoc.getLong("participants") ?: 0L
+            val newParticipants = currentParticipants + 1
+
             val participantData = hashMapOf(
                 "userId" to userId,
                 "eventId" to eventId
             )
-            firestore.collection("event_participants")
-                .add(participantData)
-                .await()
+
+            firestore.runBatch { batch ->
+                batch.set(firestore.collection("event_participants").document(), participantData)
+                batch.update(eventDocRef, "participants", newParticipants)
+            }.await()
+
             withContext(Dispatchers.Main) {
                 buttonJoin.text = "Leave"
                 buttonJoin.setOnClickListener {
@@ -197,6 +211,7 @@ class EventDetailFragment : Fragment() {
                         leaveEvent()
                     }
                 }
+                tvParticipants.text = newParticipants.toString()  // Update UI
                 Toast.makeText(context, "Successfully joined the event!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
@@ -209,15 +224,23 @@ class EventDetailFragment : Fragment() {
 
     private suspend fun leaveEvent() {
         try {
+            val eventDocRef = firestore.collection("events").document(eventId)
+            val eventDoc = eventDocRef.get().await()
+            val currentParticipants = eventDoc.getLong("participants") ?: 0L
+            val newParticipants = currentParticipants - 1
+
             val participantQuery = firestore.collection("event_participants")
                 .whereEqualTo("userId", userId)
                 .whereEqualTo("eventId", eventId)
                 .get()
                 .await()
 
-            for (document in participantQuery.documents) {
-                firestore.collection("event_participants").document(document.id).delete().await()
-            }
+            firestore.runBatch { batch ->
+                for (document in participantQuery.documents) {
+                    batch.delete(firestore.collection("event_participants").document(document.id))
+                }
+                batch.update(eventDocRef, "participants", newParticipants)
+            }.await()
 
             withContext(Dispatchers.Main) {
                 buttonJoin.text = "Join"
@@ -226,6 +249,7 @@ class EventDetailFragment : Fragment() {
                         joinEvent()
                     }
                 }
+                tvParticipants.text = newParticipants.toString()  // Update UI
                 Toast.makeText(context, "Successfully left the event.", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {

@@ -126,14 +126,14 @@
             android:id="@+id/buttonDonateEventDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mediumGray"
             android:text="Donate"
             android:textColor="@color/white"
-            android:backgroundTint="@color/mediumGray"
             app:cornerRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView27" />
+            app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
         <EditText
             android:id="@+id/editTextNumberSigned2"
@@ -173,6 +173,28 @@
             app:cornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Total Participants: "
+            android:textColor="@color/mediumGray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/textView27"
+            app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+        <TextView
+            android:id="@+id/tvParticipantsEventDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            android:textColor="@color/charcoal"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/textView26"
+            app:layout_constraintTop_toTopOf="@+id/textView26" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

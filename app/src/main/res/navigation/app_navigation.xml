@@ -137,6 +137,9 @@
         <argument
             android:name="eventDonation"
             app:argType="integer" />
+        <argument
+            android:name="eventParticipants"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/action_global_eventDetailFragment"
@@ -165,6 +168,9 @@
             app:argType="string" />
         <argument
             android:name="eventDonation"
+            app:argType="integer" />
+        <argument
+            android:name="eventParticipants"
             app:argType="integer" />
     </action>
     <fragment
