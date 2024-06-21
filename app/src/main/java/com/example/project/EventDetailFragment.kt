@@ -104,6 +104,7 @@ class EventDetailFragment : Fragment() {
         tvSchedule.setText(eventDate)
         tvLocation.setText(eventLocation)
         tvDonation.text = vmEvent.formatRupiah(eventDonation.toInt())
+        tvParticipants.setText(eventParticipants)
 
         Glide.with(this)
             .load(eventImageUrl)

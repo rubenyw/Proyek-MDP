@@ -50,6 +50,7 @@ class AdapterEvent(var context: Context, var arr: List<EventClassUI>, private va
         Glide.with(context)
             .load(arr[position].urlLink)  // Ensure imageUrl is a property of EventClass
             .into(holder.imageEvent)
+
         holder.mycons.setOnClickListener(View.OnClickListener {
             val event = arr[position]
             val action = UpcomingEventsFragmentDirections.actionGlobalEventDetailFragment(

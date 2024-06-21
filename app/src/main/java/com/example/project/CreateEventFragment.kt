@@ -25,6 +25,11 @@ import android.app.TimePickerDialog
 import android.widget.ProgressBar
 import androidx.fragment.app.viewModels
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 
 class CreateEventFragment : Fragment() {
@@ -42,6 +47,10 @@ class CreateEventFragment : Fragment() {
     lateinit var eventImageName: TextView
     lateinit var createEventButton: Button
     lateinit var progressBar: ProgressBar
+    private val coroutine = CoroutineScope(Dispatchers.IO)
+    private lateinit var db: AppDatabase
+    private lateinit var userId: String
+    private lateinit var firestore: FirebaseFirestore
 
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
@@ -52,6 +61,20 @@ class CreateEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_create_event, container, false)
+
+        db = AppDatabase.build(this.requireActivity())
+        firestore = FirebaseFirestore.getInstance()
+        coroutine.launch {
+            val users = db.userDAO().fetch()
+            if (users.isNotEmpty()) {
+                val name = users[0].name
+                userId = users[0].id
+                fetchUserData(userId)
+                withContext(Dispatchers.Main) {
+
+                }
+            }
+        }
 
         backButton = v.findViewById(R.id.buttonBackCreateEvent)
         eventNameInput = v.findViewById(R.id.etEventName)
@@ -135,9 +158,23 @@ class CreateEventFragment : Fragment() {
         val eventTimestamp = Timestamp(eventDate)
 
         if (this::imageUri.isInitialized) {
-            vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp)
+            vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, userId)
         } else {
-            vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "")
+            vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "", userId, 0)
+        }
+    }
+
+    private suspend fun fetchUserData(id: String) {
+        try {
+            val documentSnapshot = firestore.collection("users").document(id).get().await()
+            if (documentSnapshot.exists()) {
+                val userData = documentSnapshot.data
+                withContext(Dispatchers.Main) {
+
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }
