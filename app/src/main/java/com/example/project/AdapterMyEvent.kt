@@ -79,7 +79,7 @@ class AdapterMyEvent(var context: Context, var arr: List<EventClassUI>, private 
                             for (document in querySnapshot.documents) {
                                 val userId = document.getString("userId")
                                 val amountString = document.getString("ammount") ?: "0"
-                                val amount = amountString.toInt()
+                                val amount = amountString.toDouble()
                                 if (userId != null) {
                                     usersRef.document(userId)
                                         .get()
