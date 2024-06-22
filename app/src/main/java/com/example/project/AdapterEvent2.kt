@@ -15,11 +15,11 @@ class AdapterEvent2(var context: Context, var arr: List<EventClassUI>, private v
     : RecyclerView.Adapter<AdapterEvent2.DpHolder>() {
 
     class DpHolder(it: View) : RecyclerView.ViewHolder(it) {
-        var txtName: TextView = it.findViewById(R.id.tvEventName)
-        var txtLocation: TextView = it.findViewById(R.id.tvLocation)
+        var txtName: TextView = it.findViewById(R.id.tvEventNameUpcomingPage)
+        var txtLocation: TextView = it.findViewById(R.id.tvLocationUpcomingPage)
         var txtDate: TextView = it.findViewById(R.id.tvDateUpcomingPage)
         var txtDescription: TextView = it.findViewById(R.id.tvEventDescriptionUpcomingPage)
-        var imageEvent: ImageView = it.findViewById(R.id.imageViewEvent)
+        var imageEvent: ImageView = it.findViewById(R.id.imageViewEventUpcomingPage)
         var mycons: ConstraintLayout = it.findViewById(R.id.eventItemConstraintLayout)
     }
 
