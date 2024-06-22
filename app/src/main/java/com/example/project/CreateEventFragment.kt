@@ -157,10 +157,23 @@ class CreateEventFragment : Fragment() {
         }
         val eventTimestamp = Timestamp(eventDate)
 
-        if (this::imageUri.isInitialized) {
-            vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, userId)
-        } else {
-            vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "", userId, 0)
+        coroutine.launch {
+            val userDocument = firestore.collection("users").document(userId).get().await()
+            val userBalance = userDocument.getDouble("saldo") ?: 0.0
+
+            if (userBalance >= eventDonation) {
+                withContext(Dispatchers.Main) {
+                    if (this@CreateEventFragment::imageUri.isInitialized) {
+                        vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, userId, userBalance)
+                    } else {
+                        vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "", userId, userBalance, 0)
+                    }
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Insufficient balance", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

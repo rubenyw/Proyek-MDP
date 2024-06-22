@@ -14,13 +14,13 @@ class ViewModelCreateEvent : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun uploadImageAndSaveEvent(imageUri: Uri, name: String, description: String, donation: Double, location: String, dateTime: Timestamp, userId: String) {
+    fun uploadImageAndSaveEvent(imageUri: Uri, name: String, description: String, donation: Double, location: String, dateTime: Timestamp, userId: String, userBalance: Double) {
         _isLoading.value = true
         val storageRef = FirebaseStorage.getInstance().reference.child("event_images/${UUID.randomUUID()}")
         storageRef.putFile(imageUri)
             .addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    saveEvent(name, description, donation, location, dateTime, uri.toString(), userId, 0)
+                    saveEvent(name, description, donation, location, dateTime, uri.toString(), userId, userBalance, 0)
                 }
             }
             .addOnFailureListener {
@@ -29,35 +29,57 @@ class ViewModelCreateEvent : ViewModel() {
             }
     }
 
-    fun saveEvent(name: String, description: String, donation: Double, location: String, dateTime: Timestamp, imageUrl: String, userId: String, participants: Int) {
-        val event = hashMapOf(
-            "name" to name,
-            "description" to description,
-            "donation" to donation,
-            "location" to location,
-            "dateTime" to dateTime,
-            "imageUrl" to imageUrl,
-            "participants" to participants,
-            "creator" to userId,
-        )
-
+    fun saveEvent(name: String, description: String, donation: Double, location: String, dateTime: Timestamp, imageUrl: String, userId: String, userBalance: Double, participants: Int) {
         val firestore = FirebaseFirestore.getInstance()
-        val eventCollection = firestore.collection("events")
-        firestore.runBatch { batch ->
-            val eventDocRef = eventCollection.document()
-            batch.set(eventDocRef, event)
+        firestore.runTransaction { transaction ->
+            val userDocRef = firestore.collection("users").document(userId)
+            val userSnapshot = transaction.get(userDocRef)
+            val currentBalance = userSnapshot.getDouble("saldo") ?: 0.0
 
-            val participantData = hashMapOf(
-                "userId" to userId,
-                "eventId" to eventDocRef.id
-            )
-            batch.set(firestore.collection("event_participants").document(), participantData)
+            if (currentBalance >= donation) {
+                val newBalance = currentBalance - donation
+                transaction.update(userDocRef, "saldo", newBalance)
 
-            val newParticipants = participants + 1
-            batch.update(eventDocRef, "participants", newParticipants)
-        }.addOnSuccessListener {
+                val eventDocRef = firestore.collection("events").document()
+                val event = hashMapOf(
+                    "name" to name,
+                    "description" to description,
+                    "donation" to donation,
+                    "location" to location,
+                    "dateTime" to dateTime,
+                    "imageUrl" to imageUrl,
+                    "participants" to participants,
+                    "creator" to userId,
+                )
+                transaction.set(eventDocRef, event)
+
+                val participantData = hashMapOf(
+                    "userId" to userId,
+                    "eventId" to eventDocRef.id
+                )
+                transaction.set(firestore.collection("event_participants").document(), participantData)
+
+                val newParticipants = participants + 1
+                transaction.update(eventDocRef, "participants", newParticipants)
+
+                if (donation > 0) {
+                    val donationHistoryData = hashMapOf(
+                        "ammount" to donation.toString(),
+                        "eventId" to eventDocRef.id,
+                        "message" to "Thank you for your donation!",
+                        "time" to dateTime,
+                        "userId" to userId
+                    )
+                    transaction.set(firestore.collection("donationHistory").document(), donationHistoryData)
+                }
+
+                true
+            } else {
+                false
+            }
+        }.addOnSuccessListener { success ->
             _isLoading.value = false
-            _eventCreated.value = true
+            _eventCreated.value = success
         }.addOnFailureListener {
             _isLoading.value = false
             _eventCreated.value = false
