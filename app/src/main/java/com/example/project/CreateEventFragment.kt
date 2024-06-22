@@ -37,16 +37,16 @@ class CreateEventFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var imageUri: Uri
 
-    lateinit var backButton: Button
-    lateinit var eventNameInput: EditText
-    lateinit var eventDescriptionInput: EditText
-    lateinit var eventDonationInput: EditText
-    lateinit var eventLocationInput: EditText
-    lateinit var eventDateTimeInput: EditText
-    lateinit var eventImageButton: Button
-    lateinit var eventImageName: TextView
-    lateinit var createEventButton: Button
-    lateinit var progressBar: ProgressBar
+    private lateinit var backButton: Button
+    private lateinit var eventNameInput: EditText
+    private lateinit var eventDescriptionInput: EditText
+    private lateinit var eventDonationInput: EditText
+    private lateinit var eventLocationInput: EditText
+    private lateinit var eventDateTimeInput: EditText
+    private lateinit var eventImageButton: Button
+    private lateinit var eventImageName: TextView
+    private lateinit var createEventButton: Button
+    private lateinit var progressBar: ProgressBar
     private lateinit var progressMessage: TextView
     private val coroutine = CoroutineScope(Dispatchers.IO)
     private lateinit var db: AppDatabase
@@ -96,7 +96,7 @@ class CreateEventFragment : Fragment() {
 
         createEventButton.setOnClickListener {
             showLoading("Uploading event details...")
-            uploadEvent()
+            checkUserEventLimit()
         }
 
         backButton.setOnClickListener {
@@ -166,6 +166,27 @@ class CreateEventFragment : Fragment() {
         eventDateTimeInput.isEnabled = enabled
         eventImageButton.isEnabled = enabled
         createEventButton.isEnabled = enabled
+    }
+
+    private fun checkUserEventLimit() {
+        coroutine.launch {
+            val currentDate = Date()
+            val eventCount = firestore.collection("events")
+                .whereEqualTo("creator", userId)
+                .whereGreaterThan("dateTime", Timestamp(currentDate))
+                .get()
+                .await()
+                .size()
+
+            withContext(Dispatchers.Main) {
+                if (eventCount < 2) {
+                    uploadEvent()
+                } else {
+                    Toast.makeText(context, "You can only create a maximum of two active events", Toast.LENGTH_SHORT).show()
+                    hideLoading()
+                }
+            }
+        }
     }
 
     private fun uploadEvent() {

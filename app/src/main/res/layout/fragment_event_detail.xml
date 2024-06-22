@@ -7,194 +7,205 @@
     tools:context=".EventDetailFragment"
     android:background="@color/green">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButtonBackEventDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/baseline_arrow_back_24"
-            android:contentDescription="Back"
-            app:tint="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:backgroundTint="@color/darkPurple" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:isScrollContainer="true"
+            android:overScrollMode="ifContentScrolls"
+            android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/imageViewEventDetailPage"
-            android:layout_width="0dp"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="Event Image"
-            app:layout_constraintBottom_toTopOf="@+id/tvTitleEventDetailPage"
-            app:cornerRadius="16dp"
-            tools:src="@tools:sample/avatars" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButtonBackEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="Back"
+                android:src="@drawable/baseline_arrow_back_24"
+                app:backgroundTint="@color/darkPurple"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
 
-        <TextView
-            android:id="@+id/tvTitleEventDetailPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="16dp"
-            android:text="Event Detail Title"
-            android:textColor="@color/charcoal"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewEventDetailPage" />
+            <ImageView
+                android:id="@+id/imageViewEventDetailPage"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Event Image"
+                android:scaleType="centerCrop"
+                app:cornerRadius="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvTitleEventDetailPage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Schedule:"
-            android:textSize="16sp"
-            android:textColor="@color/mediumGray"
-            app:layout_constraintStart_toStartOf="@+id/tvTitleEventDetailPage"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleEventDetailPage" />
+            <TextView
+                android:id="@+id/tvTitleEventDetailPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                android:text="Event Detail Title"
+                android:textColor="@color/charcoal"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewEventDetailPage" />
 
-        <TextView
-            android:id="@+id/tvDateTimeEventDetailPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Date and Time"
-            android:textSize="16sp"
-            android:textColor="@color/charcoal"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Schedule:"
+                android:textColor="@color/mediumGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/tvTitleEventDetailPage"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitleEventDetailPage" />
 
-        <TextView
-            android:id="@+id/tvDescriptionEventDetailPage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="30dp"
-            android:text="Event description goes here. It should provide details about the event."
-            android:textColor="@color/mediumGray"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateTimeEventDetailPage" />
+            <TextView
+                android:id="@+id/tvDateTimeEventDetailPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Date and Time"
+                android:textColor="@color/charcoal"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
 
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Current Donation:"
-            android:textSize="16sp"
-            android:textColor="@color/mediumGray"
-            app:layout_constraintStart_toStartOf="@+id/tvDescriptionEventDetailPage"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescriptionEventDetailPage" />
+            <TextView
+                android:id="@+id/tvDescriptionEventDetailPage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="30dp"
+                android:text="Event description goes here. It should provide details about the event."
+                android:textColor="@color/mediumGray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTimeEventDetailPage" />
 
-        <TextView
-            android:id="@+id/tvDonationEventDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Rp.0"
-            android:textSize="16sp"
-            android:textColor="@color/charcoal"
-            app:layout_constraintStart_toEndOf="@+id/textView27"
-            app:layout_constraintTop_toTopOf="@+id/textView27" />
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Current Donation:"
+                android:textColor="@color/mediumGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/tvDescriptionEventDetailPage"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescriptionEventDetailPage" />
 
-        <TextView
-            android:id="@+id/tvLocationEventDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:text="Event Location"
-            android:textColor="@color/charcoal"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvDateTimeEventDetailPage" />
+            <TextView
+                android:id="@+id/tvDonationEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Rp.0"
+                android:textColor="@color/charcoal"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView27"
+                app:layout_constraintTop_toTopOf="@+id/textView27" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonDonateEventDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/mediumGray"
-            android:text="Donate"
-            android:textColor="@color/white"
-            app:cornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
+            <TextView
+                android:id="@+id/tvLocationEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:text="Event Location"
+                android:textColor="@color/charcoal"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvDateTimeEventDetailPage" />
 
-        <EditText
-            android:id="@+id/editTextNumberSigned2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/charcoal"
-            android:hint="Enter Amount"
-            android:inputType="numberSigned"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="@+id/buttonDonateEventDetail" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonDonateEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/mediumGray"
+                android:text="Donate"
+                android:textColor="@color/white"
+                app:cornerRadius="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Rp."
-            android:textSize="16sp"
-            android:textColor="@color/charcoal"
-            app:layout_constraintStart_toEndOf="@+id/buttonDonateEventDetail"
-            app:layout_constraintTop_toTopOf="@+id/buttonDonateEventDetail" />
+            <EditText
+                android:id="@+id/editTextNumberSigned2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/charcoal"
+                android:hint="Enter Amount"
+                android:inputType="numberSigned"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="@+id/buttonDonateEventDetail" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonJoinEventDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Join Event"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/charcoal"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Rp."
+                android:textColor="@color/charcoal"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/buttonDonateEventDetail"
+                app:layout_constraintTop_toTopOf="@+id/buttonDonateEventDetail" />
 
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Total Participants: "
-            android:textColor="@color/mediumGray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/textView27"
-            app:layout_constraintTop_toBottomOf="@+id/textView27" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonJoinEventDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/charcoal"
+                android:overScrollMode="always"
+                android:text="Join Event"
+                android:textColor="@color/white"
+                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonDonateEventDetail" />
 
-        <TextView
-            android:id="@+id/tvParticipantsEventDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="0"
-            android:textColor="@color/charcoal"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/textView26"
-            app:layout_constraintTop_toTopOf="@+id/textView26" />
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Total Participants: "
+                android:textColor="@color/mediumGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/textView27"
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tvParticipantsEventDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="0"
+                android:textColor="@color/charcoal"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/textView26"
+                app:layout_constraintTop_toTopOf="@+id/textView26" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
