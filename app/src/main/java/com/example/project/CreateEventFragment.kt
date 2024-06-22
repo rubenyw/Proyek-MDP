@@ -47,6 +47,7 @@ class CreateEventFragment : Fragment() {
     lateinit var eventImageName: TextView
     lateinit var createEventButton: Button
     lateinit var progressBar: ProgressBar
+    private lateinit var progressMessage: TextView
     private val coroutine = CoroutineScope(Dispatchers.IO)
     private lateinit var db: AppDatabase
     private lateinit var userId: String
@@ -86,6 +87,7 @@ class CreateEventFragment : Fragment() {
         eventImageName = v.findViewById(R.id.tvImageNameCreateEvent)
         createEventButton = v.findViewById(R.id.buttonCreateEventCreateEventPage)
         progressBar = v.findViewById(R.id.progressBar)
+        progressMessage = v.findViewById(R.id.progressMessage)
 
         eventImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -93,6 +95,7 @@ class CreateEventFragment : Fragment() {
         }
 
         createEventButton.setOnClickListener {
+            showLoading("Uploading event details...")
             uploadEvent()
         }
 
@@ -141,6 +144,30 @@ class CreateEventFragment : Fragment() {
         }
     }
 
+    private fun showLoading(message: String) {
+        progressBar.visibility = View.VISIBLE
+        progressMessage.text = message
+        progressMessage.visibility = View.VISIBLE
+        setInputsEnabled(false)
+    }
+
+    private fun hideLoading() {
+        progressBar.visibility = View.GONE
+        progressMessage.visibility = View.GONE
+        setInputsEnabled(true)
+    }
+
+    private fun setInputsEnabled(enabled: Boolean) {
+        backButton.isEnabled = enabled
+        eventNameInput.isEnabled = enabled
+        eventDescriptionInput.isEnabled = enabled
+        eventDonationInput.isEnabled = enabled
+        eventLocationInput.isEnabled = enabled
+        eventDateTimeInput.isEnabled = enabled
+        eventImageButton.isEnabled = enabled
+        createEventButton.isEnabled = enabled
+    }
+
     private fun uploadEvent() {
         val eventName = eventNameInput.text.toString()
         val eventDescription = eventDescriptionInput.text.toString()
@@ -153,14 +180,29 @@ class CreateEventFragment : Fragment() {
             eventDate = dateFormat.parse(eventDateTime)!!
         } catch (e: Exception) {
             Toast.makeText(context, "Invalid date and time format", Toast.LENGTH_SHORT).show()
+            hideLoading()
             return
         }
         val eventTimestamp = Timestamp(eventDate)
 
-        if (this::imageUri.isInitialized) {
-            vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, userId)
-        } else {
-            vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "", userId, 0)
+        coroutine.launch {
+            val userDocument = firestore.collection("users").document(userId).get().await()
+            val userBalance = userDocument.getDouble("saldo") ?: 0.0
+
+            if (userBalance >= eventDonation) {
+                withContext(Dispatchers.Main) {
+                    if (this@CreateEventFragment::imageUri.isInitialized) {
+                        vmEvent.uploadImageAndSaveEvent(imageUri, eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, userId, userBalance)
+                    } else {
+                        vmEvent.saveEvent(eventName, eventDescription, eventDonation, eventLocation, eventTimestamp, "", userId, userBalance, 0)
+                    }
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Insufficient balance", Toast.LENGTH_SHORT).show()
+                    hideLoading()
+                }
+            }
         }
     }
 

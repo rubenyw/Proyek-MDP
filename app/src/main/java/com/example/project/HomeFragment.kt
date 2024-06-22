@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -111,12 +112,18 @@ class HomeFragment : Fragment() {
                 val userData = documentSnapshot.data
                 withContext(Dispatchers.Main) {
                     val saldo = userData?.get("saldo") as? Double
-                    tvSaldo.text = "Rp ${saldo?.toInt() ?: 0}"
+                    tvSaldo.text = "${formatRupiah(saldo?.toInt() ?: 0)}"
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun formatRupiah(amount: Int): String {
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+        return numberFormat.format(amount)
     }
 
     private fun fetchEvents() {
