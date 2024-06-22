@@ -38,11 +38,14 @@ class participationBookFragment : Fragment() {
     lateinit var btnUpcoming: Button
     lateinit var btnHistory: Button
     lateinit var btnBack: ImageButton
+    lateinit var btnMyEvent: Button
     lateinit var rvEvent: RecyclerView
     private lateinit var adapter: AdapterEvent2
+    private lateinit var adapter2: AdapterMyEvent
     private var eventsData = ArrayList<EventClassUI>()
     private var upcomingData = ArrayList<EventClassUI>()
     private var historyData = ArrayList<EventClassUI>()
+    private var myEventData = ArrayList<EventClassUI>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,25 +56,41 @@ class participationBookFragment : Fragment() {
 
         btnUpcoming = view.findViewById(R.id.participation_upcoming_btn)
         btnHistory = view.findViewById(R.id.participation_history_btn)
+        btnMyEvent = view.findViewById(R.id.participation_myevent_btn)
         rvEvent = view.findViewById(R.id.participation_rv)
 
         adapter = AdapterEvent2(requireContext(), upcomingData, findNavController())
+        adapter2 = AdapterMyEvent(requireContext(), myEventData, findNavController())
         rvEvent.adapter = adapter
         rvEvent.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         btnUpcoming.setBackgroundColor(resources.getColor(R.color.default_button_color))
         btnHistory.setBackgroundColor(resources.getColor(R.color.gray))
+        btnMyEvent.setBackgroundColor(resources.getColor(R.color.gray))
 
         btnUpcoming.setOnClickListener {
             btnUpcoming.setBackgroundColor(resources.getColor(R.color.default_button_color))
             btnHistory.setBackgroundColor(resources.getColor(R.color.gray))
+            btnMyEvent.setBackgroundColor(resources.getColor(R.color.gray))
             adapter.updateData(upcomingData)
+            rvEvent.adapter = adapter
         }
 
         btnHistory.setOnClickListener {
             btnHistory.setBackgroundColor(resources.getColor(R.color.default_button_color))
             btnUpcoming.setBackgroundColor(resources.getColor(R.color.gray))
+            btnMyEvent.setBackgroundColor(resources.getColor(R.color.gray))
             adapter.updateData(historyData)
+            rvEvent.adapter = adapter
+        }
+
+        btnMyEvent.setOnClickListener {
+            btnUpcoming.setBackgroundColor(resources.getColor(R.color.gray))
+            btnHistory.setBackgroundColor(resources.getColor(R.color.gray))
+            btnMyEvent.setBackgroundColor(resources.getColor(R.color.default_button_color))
+            adapter2.updateData(myEventData)
+            rvEvent.adapter = adapter2
+            adapter2.notifyDataSetChanged()
         }
 
         btnBack = view.findViewById(R.id.btnBack_book)
@@ -116,19 +135,20 @@ class participationBookFragment : Fragment() {
                     val formattedDate = date?.let { formatDate(it) } ?: "Unknown date"
 
                     val event = EventClassUI(
-                        document.id,
-                        document.getString("name") ?: "",
-                        formattedDate,
-                        document.getString("location") ?: "",
-                        document.getString("description") ?: "",
-                        document.getString("imageUrl") ?: ""
+                        id = document.id,
+                        name = document.getString("name") ?: "",
+                        date = formattedDate,
+                        location = document.getString("location") ?: "",
+                        description = document.getString("description") ?: "",
+                        urlLink = document.getString("imageUrl") ?: "",
+                        creator = document.getString("creator") ?: ""
                     )
                     eventsData.add(event)
                 }
             }
             Log.d("EventData", "Number of events fetched: ${eventsData.size}")
 
-            sortEventsByDate()
+            sortEvents(userId)
 
             withContext(Dispatchers.Main) {
                 adapter.notifyDataSetChanged()
@@ -146,7 +166,7 @@ class participationBookFragment : Fragment() {
         return format.format(date)
     }
 
-    private fun sortEventsByDate() {
+    private fun sortEvents(userId: String) {
         val today = Calendar.getInstance().time
 
         upcomingData.clear()
@@ -158,6 +178,9 @@ class participationBookFragment : Fragment() {
                 if (eventDate != null) {
                     if (eventDate.after(today)) {
                         upcomingData.add(event)
+                        if (event.creator == userId){
+                            myEventData.add(event)
+                        }
                     } else {
                         historyData.add(event)
                     }
