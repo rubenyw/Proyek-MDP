@@ -45,9 +45,10 @@ class EventDetailFragment : Fragment() {
     private lateinit var eventImageUrl: String
     private lateinit var eventDonation: String
     private lateinit var eventParticipants: String
+    private lateinit var eventCreatorId: String
+    private lateinit var userId: String
     private val coroutine = CoroutineScope(Dispatchers.IO)
     private lateinit var db: AppDatabase
-    private lateinit var userId: String
     private lateinit var firestore: FirebaseFirestore
     private val vmEvent: ViewModelEvent by viewModels()
 
@@ -132,7 +133,7 @@ class EventDetailFragment : Fragment() {
                             Toast.makeText(context, "Donation successful!", Toast.LENGTH_SHORT).show();
                             buttonDonate.isEnabled = true;
                             buttonDonate.text = "Donate";
-                            editTextDonationAmount.setText("");;
+                            editTextDonationAmount.setText("");
                         },
                         onFailure = { errorMessage ->
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
@@ -232,8 +233,17 @@ class EventDetailFragment : Fragment() {
 
     private suspend fun leaveEvent() {
         try {
+            val eventDoc = firestore.collection("events").document(eventId).get().await()
+            eventCreatorId = eventDoc.getString("creator") ?: ""
+
+            if (userId == eventCreatorId) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "You cannot leave your own event.", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+
             val eventDocRef = firestore.collection("events").document(eventId)
-            val eventDoc = eventDocRef.get().await()
             val currentParticipants = eventDoc.getLong("participants") ?: 0L
             val newParticipants = currentParticipants - 1
 
