@@ -110,36 +110,41 @@ class EventDetailFragment : Fragment() {
             .load(eventImageUrl)
             .into(imageViewEventImage)
 
+        return v
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState);
+
         buttonBack.setOnClickListener {
             findNavController().navigate(R.id.action_global_upcomingEventsFragment)
         }
 
         buttonDonate.setOnClickListener {
-            buttonDonate.setOnClickListener {
+            val donationAmount = editTextDonationAmount.text.toString().toIntOrNull()
+            if (donationAmount != null) {
+                buttonDonate.isEnabled = false;
+                buttonDonate.text = "Donating...";
                 coroutine.launch {
-                    val donationAmount = editTextDonationAmount.text.toString().toIntOrNull()
-                    if (donationAmount != null) {
-                        vmEvent.processDonation(userId, eventId, donationAmount,
-                            onSuccess = { newDonation ->
-                                tvDonation.text = vmEvent.formatRupiah(newDonation.toInt())
-                                Toast.makeText(context, "Donation successful!", Toast.LENGTH_SHORT).show()
-                            },
-                            onFailure = { errorMessage ->
-                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        )
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(context, "Please enter a valid donation amount.", Toast.LENGTH_SHORT).show()
+                    vmEvent.processDonation(userId, eventId, donationAmount,
+                        onSuccess = { newDonation ->
+                            tvDonation.text = vmEvent.formatRupiah(newDonation.toInt())
+                            Toast.makeText(context, "Donation successful!", Toast.LENGTH_SHORT).show();
+                            buttonDonate.isEnabled = true;
+                            buttonDonate.text = "Donate";
+                        },
+                        onFailure = { errorMessage ->
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                            buttonDonate.isEnabled = true;
+                            buttonDonate.text = "Donate";
                         }
-                    }
+                    )
                 }
             }
+
         }
 
         checkUserParticipation()
-
-        return v
     }
 
     private suspend fun fetchUserData(id: String) {
