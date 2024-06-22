@@ -4,26 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 class AdapterEvent(var context: Context, var arr: List<EventClassUI>, private val navController: NavController)
     : RecyclerView.Adapter<AdapterEvent.DpHolder>() {
 
     class DpHolder(it: View) : RecyclerView.ViewHolder(it) {
-        var txtName: TextView = it.findViewById(R.id.tvEventNameUpcomingPage)
-        var txtLocation: TextView = it.findViewById(R.id.tvLocationUpcomingPage)
+        var txtName: TextView = it.findViewById(R.id.tvEventName)
+        var txtLocation: TextView = it.findViewById(R.id.tvLocation)
         var txtDate: TextView = it.findViewById(R.id.tvDateUpcomingPage)
         var txtDescription: TextView = it.findViewById(R.id.tvEventDescriptionUpcomingPage)
-        var imageEvent: ImageView = it.findViewById(R.id.imageViewEventUpcomingPage)
+        var imageEvent: ImageView = it.findViewById(R.id.imageViewEvent)
         var mycons: ConstraintLayout = it.findViewById(R.id.eventItemConstraintLayout)
     }
 
