@@ -132,11 +132,13 @@ class EventDetailFragment : Fragment() {
                             Toast.makeText(context, "Donation successful!", Toast.LENGTH_SHORT).show();
                             buttonDonate.isEnabled = true;
                             buttonDonate.text = "Donate";
+                            editTextDonationAmount.setText("");;
                         },
                         onFailure = { errorMessage ->
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                             buttonDonate.isEnabled = true;
                             buttonDonate.text = "Donate";
+                            editTextDonationAmount.setText("");
                         }
                     )
                 }
